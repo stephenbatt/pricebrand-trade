@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DollarSign, TrendingUp, TrendingDown, Trophy, XCircle, RefreshCw } from "lucide-react";
+import { DollarSign, Shield, Zap, XCircle, RefreshCw, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "./ui/button";
 import { formatNumber } from "../utils/formatters";
 
@@ -13,7 +13,7 @@ export const Scoreboard = ({ scoreboard, onReset }) => {
         <div className="terminal-card card-hover" data-testid="scoreboard">
             <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
-                    <Trophy className="w-4 h-4 text-yellow-500" />
+                    <DollarSign className="w-4 h-4 text-yellow-500" />
                     <span className="label-text">Scoreboard</span>
                 </div>
                 <Button 
@@ -38,7 +38,7 @@ export const Scoreboard = ({ scoreboard, onReset }) => {
                 <div>
                     <span className="label-text">Total P&L</span>
                     <p className={`font-mono text-xl font-bold ${pnlClass}`} data-testid="total-pnl">
-                        {isProfit ? '+' : ''}{formatNumber(scoreboard.total_pnl)}
+                        {isProfit ? '+' : ''}${formatNumber(scoreboard.total_pnl)}
                     </p>
                 </div>
             </div>
@@ -79,12 +79,13 @@ export const Scoreboard = ({ scoreboard, onReset }) => {
 export const TradingPanel = ({ selectedTicker, tickerData, rangeData, scoreboard, onTrade, onCloseTrade, openTrades }) => {
     const [tradeAmount, setTradeAmount] = useState(100);
     const [isTrading, setIsTrading] = useState(false);
+    const [fenceMultiplier, setFenceMultiplier] = useState(1.0);
     
-    const handleTrade = async (direction) => {
+    const handleTrade = async (betType) => {
         if (!tickerData?.price || tradeAmount <= 0) return;
         setIsTrading(true);
         try {
-            await onTrade(selectedTicker, direction, tradeAmount);
+            await onTrade(selectedTicker, betType, tradeAmount, fenceMultiplier);
         } finally {
             setIsTrading(false);
         }
@@ -92,16 +93,77 @@ export const TradingPanel = ({ selectedTicker, tickerData, rangeData, scoreboard
     
     const maxBet = scoreboard?.balance || 0;
     
+    // Calculate adjusted fence
+    const avgRange = rangeData?.avg_daily_range || 0;
+    const adjustedRange = avgRange * fenceMultiplier;
+    const currentPrice = rangeData?.current_price || tickerData?.price || 0;
+    const anchorPrice = rangeData?.anchor_price || currentPrice;
+    const adjustedHighBand = anchorPrice + (adjustedRange / 2);
+    const adjustedLowBand = anchorPrice - (adjustedRange / 2);
+    
+    const fenceOptions = [
+        { value: 1.0, label: "1x (Normal)" },
+        { value: 1.25, label: "1.25x (Safer)" },
+        { value: 1.5, label: "1.5x (Safe)" },
+        { value: 2.0, label: "2x (Very Safe)" },
+    ];
+    
     return (
         <div className="terminal-card card-hover" data-testid="trading-panel">
             <div className="flex items-center gap-2 mb-4">
-                <DollarSign className="w-4 h-4 text-green-500" />
-                <span className="label-text">Paper Trading</span>
+                <Shield className="w-4 h-4 text-green-500" />
+                <span className="label-text">Fence Betting</span>
+            </div>
+            
+            {/* Fence Adjustment */}
+            <div className="mb-4 p-3 bg-blue-500/10 border border-blue-500/30 rounded">
+                <div className="flex items-center justify-between mb-2">
+                    <span className="label-text text-blue-400">Fence Width</span>
+                    <span className="font-mono text-sm text-blue-400">{fenceMultiplier}x</span>
+                </div>
+                <div className="grid grid-cols-4 gap-1">
+                    {fenceOptions.map(function(opt) {
+                        const isSelected = fenceMultiplier === opt.value;
+                        return (
+                            <button
+                                key={opt.value}
+                                onClick={() => setFenceMultiplier(opt.value)}
+                                className={`py-1 px-2 text-xs font-mono rounded transition-colors ${
+                                    isSelected 
+                                        ? 'bg-blue-500 text-white' 
+                                        : 'bg-surface-highlight text-muted-foreground hover:text-foreground'
+                                }`}
+                                data-testid={`fence-${opt.value}`}
+                            >
+                                {opt.value}x
+                            </button>
+                        );
+                    })}
+                </div>
+                <p className="text-xs text-muted-foreground mt-2">
+                    Wider fence = easier to win INSIDE bets
+                </p>
+            </div>
+            
+            {/* Adjusted Fence Display */}
+            <div className="mb-4 p-3 bg-surface-highlight/50 rounded border border-border">
+                <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs text-muted-foreground">Your Fence</span>
+                    <span className="font-mono text-xs text-green-500">${formatNumber(adjustedHighBand)}</span>
+                </div>
+                <div className="flex justify-between items-center mb-1">
+                    <span className="text-xs text-muted-foreground">Current Price</span>
+                    <span className="font-mono text-sm font-bold">${formatNumber(currentPrice)}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                    <span className="text-xs text-muted-foreground">Your Fence</span>
+                    <span className="font-mono text-xs text-red-500">${formatNumber(adjustedLowBand)}</span>
+                </div>
             </div>
             
             {/* Trade Amount */}
             <div className="mb-4">
-                <span className="label-text">Trade Amount</span>
+                <span className="label-text">Bet Amount</span>
                 <div className="flex gap-2 mt-2">
                     <input
                         type="number"
@@ -132,67 +194,74 @@ export const TradingPanel = ({ selectedTicker, tickerData, rangeData, scoreboard
                 </div>
             </div>
             
-            {/* Current Price Info */}
-            <div className="mb-4 p-3 bg-surface-highlight/50 rounded border border-border">
-                <div className="flex justify-between">
-                    <span className="text-xs text-muted-foreground">Entry Price</span>
-                    <span className="font-mono text-sm font-bold">${formatNumber(tickerData?.price)}</span>
-                </div>
-                <div className="flex justify-between mt-1">
-                    <span className="text-xs text-muted-foreground">Range</span>
-                    <span className="font-mono text-xs">
-                        ${formatNumber(rangeData?.low_band)} - ${formatNumber(rangeData?.high_band)}
-                    </span>
-                </div>
-            </div>
-            
-            {/* Trade Buttons */}
-            <div className="grid grid-cols-2 gap-3">
+            {/* Bet Buttons */}
+            <div className="grid grid-cols-2 gap-3 mb-4">
                 <Button
-                    onClick={() => handleTrade('long')}
+                    onClick={() => handleTrade('inside')}
                     disabled={isTrading || tradeAmount <= 0 || tradeAmount > maxBet}
-                    className="bg-green-600 hover:bg-green-500 text-white font-mono text-xs uppercase tracking-wider h-10"
-                    data-testid="long-btn"
+                    className="bg-green-600 hover:bg-green-500 text-white font-mono text-xs uppercase tracking-wider h-14 flex-col"
+                    data-testid="bet-inside-btn"
                 >
-                    <TrendingUp className="w-4 h-4 mr-2" />
-                    Long
+                    <Shield className="w-5 h-5 mb-1" />
+                    BET INSIDE
+                    <span className="text-[10px] opacity-75">Stay in fence = WIN</span>
                 </Button>
                 <Button
-                    onClick={() => handleTrade('short')}
+                    onClick={() => handleTrade('outside')}
                     disabled={isTrading || tradeAmount <= 0 || tradeAmount > maxBet}
-                    className="bg-red-600 hover:bg-red-500 text-white font-mono text-xs uppercase tracking-wider h-10"
-                    data-testid="short-btn"
+                    className="bg-red-600 hover:bg-red-500 text-white font-mono text-xs uppercase tracking-wider h-14 flex-col"
+                    data-testid="bet-outside-btn"
                 >
-                    <TrendingDown className="w-4 h-4 mr-2" />
-                    Short
+                    <Zap className="w-5 h-5 mb-1" />
+                    BET OUTSIDE
+                    <span className="text-[10px] opacity-75">Break fence = WIN</span>
                 </Button>
             </div>
             
-            {/* Open Trades */}
+            {/* Explanation */}
+            <div className="p-3 bg-yellow-500/10 border border-yellow-500/30 rounded text-xs">
+                <p className="text-yellow-400 font-bold mb-1">How it works:</p>
+                <p className="text-muted-foreground">
+                    <strong>BET INSIDE:</strong> You win if price stays between ${formatNumber(adjustedLowBand)} and ${formatNumber(adjustedHighBand)} at 4PM.
+                </p>
+                <p className="text-muted-foreground mt-1">
+                    <strong>BET OUTSIDE:</strong> You win if price breaks above ${formatNumber(adjustedHighBand)} OR below ${formatNumber(adjustedLowBand)}.
+                </p>
+            </div>
+            
+            {/* Open Bets */}
             {openTrades && openTrades.length > 0 && (
                 <div className="mt-4 pt-4 border-t border-border">
-                    <span className="label-text">Open Positions</span>
+                    <span className="label-text">Open Bets</span>
                     <div className="space-y-2 mt-2">
                         {openTrades.map(function(trade) {
-                            const isProfit = (trade.unrealized_pnl || 0) >= 0;
+                            const isInside = trade.direction === 'inside';
+                            const currentInRange = trade.low_band <= (trade.current_price || 0) && (trade.current_price || 0) <= trade.high_band;
+                            const isWinning = isInside ? currentInRange : !currentInRange;
+                            
                             return (
                                 <div 
                                     key={trade.id} 
-                                    className="flex items-center justify-between p-2 bg-surface-highlight/30 rounded border border-border"
+                                    className={`flex items-center justify-between p-3 rounded border ${
+                                        isWinning ? 'bg-green-500/10 border-green-500/30' : 'bg-red-500/10 border-red-500/30'
+                                    }`}
                                     data-testid={`open-trade-${trade.id}`}
                                 >
                                     <div>
-                                        <span className={`font-mono text-xs uppercase ${trade.direction === 'long' ? 'text-green-500' : 'text-red-500'}`}>
-                                            {trade.direction}
-                                        </span>
-                                        <span className="font-mono text-xs ml-2">{trade.symbol}</span>
-                                        <span className="font-mono text-xs text-muted-foreground ml-2">
-                                            ${formatNumber(trade.amount)}
-                                        </span>
+                                        <div className="flex items-center gap-2">
+                                            {isInside ? <Shield className="w-4 h-4 text-green-500" /> : <Zap className="w-4 h-4 text-red-500" />}
+                                            <span className={`font-mono text-xs uppercase font-bold ${isInside ? 'text-green-500' : 'text-red-500'}`}>
+                                                {trade.direction}
+                                            </span>
+                                            <span className="font-mono text-xs">{trade.symbol}</span>
+                                        </div>
+                                        <div className="text-xs text-muted-foreground mt-1">
+                                            Bet: ${formatNumber(trade.amount)} | Fence: ${formatNumber(trade.low_band)} - ${formatNumber(trade.high_band)}
+                                        </div>
                                     </div>
                                     <div className="flex items-center gap-2">
-                                        <span className={`font-mono text-xs font-bold ${isProfit ? 'text-green-500' : 'text-red-500'}`}>
-                                            {isProfit ? '+' : ''}{formatNumber(trade.unrealized_pnl || 0)}
+                                        <span className={`font-mono text-xs font-bold ${isWinning ? 'text-green-500' : 'text-red-500'}`}>
+                                            {isWinning ? 'WINNING' : 'LOSING'}
                                         </span>
                                         <Button
                                             variant="ghost"
