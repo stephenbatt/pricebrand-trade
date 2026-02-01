@@ -21,17 +21,15 @@ import {
 } from "./components/ui/dropdown-menu";
 import { Button } from "./components/ui/button";
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from "./components/ui/tooltip";
-import { 
-    formatNumber, 
-    formatVolume, 
-    MarketStatus, 
-    TickerTabs, 
-    PriceCard, 
-    HistoricalRangesCard, 
-    StatsCard, 
-    AllTickersPanel 
-} from "./components/TradingComponents";
+import { formatNumber, formatVolume } from "./utils/formatters";
+import { MarketStatus } from "./components/MarketStatus";
+import { TickerTabs } from "./components/TickerTabs";
+import { PriceCard } from "./components/PriceCard";
 import { RangeBandsCard } from "./components/RangeBandsCard";
+import { HistoricalRangesCard } from "./components/HistoricalRangesCard";
+import { StatsCard } from "./components/StatsCard";
+import { AllTickersPanel } from "./components/AllTickersPanel";
+import { TickerTape } from "./components/TickerTape";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -266,21 +264,7 @@ function App() {
                     />
                 </main>
                 
-                <footer className="ticker-tape" data-testid="ticker-tape">
-                    <div className="ticker-content ticker-scroll">
-                        {allTickersData.concat(allTickersData).map((ticker, idx) => (
-                            <span key={idx} className="flex items-center gap-2">
-                                <span className="font-bold">{ticker.symbol}</span>
-                                <span className={ticker.change >= 0 ? 'text-green-500' : 'text-red-500'}>
-                                    ${formatNumber(ticker.price)}
-                                </span>
-                                <span className={ticker.change >= 0 ? 'text-green-500' : 'text-red-500'}>
-                                    ({ticker.change >= 0 ? '+' : ''}{formatNumber(ticker.change_percent)}%)
-                                </span>
-                            </span>
-                        ))}
-                    </div>
-                </footer>
+                <TickerTape tickersData={allTickersData} />
                 
                 {lastUpdate && (
                     <div className="fixed bottom-12 right-4 text-xs text-muted-foreground font-mono" data-testid="last-update">
