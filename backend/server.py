@@ -300,7 +300,7 @@ async def get_ticker_data(symbol: str):
     yahoo_symbol = "^GSPC" if symbol.upper() == "SPX" else symbol.upper()
     
     try:
-        data = await fetch_yahoo_data(yahoo_symbol, period="1d", interval="1m")
+        data = await fetch_yahoo_data(yahoo_symbol, period="5d", interval="1d")
         parsed = parse_yahoo_response(data, symbol.upper())
         
         change = parsed["current_price"] - parsed["previous_close"]
