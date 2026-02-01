@@ -1,34 +1,227 @@
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
-}
+/* Terminal Dashboard Styles */
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
-}
-
-.App-header {
-    background-color: #0f0f10;
+/* Main container */
+.dashboard-container {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    background-color: hsl(var(--background));
+}
+
+/* Header styles */
+.dashboard-header {
+    height: 56px;
+    border-bottom: 1px solid hsl(var(--border));
+    display: flex;
     align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+    justify-content: space-between;
+    padding: 0 1.5rem;
+    background-color: hsl(var(--surface) / 0.5);
+    backdrop-filter: blur(12px);
 }
 
-.App-link {
-    color: #61dafb;
+.logo-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: -0.02em;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
+/* Main content grid */
+.main-content {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+@media (min-width: 768px) {
+    .main-content {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: auto 1fr auto;
     }
-    to {
-        transform: rotate(360deg);
-    }
+}
+
+/* Card base styles */
+.terminal-card {
+    background-color: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    border-radius: 0;
+    padding: 1rem;
+}
+
+.terminal-card:hover {
+    border-color: hsl(var(--primary) / 0.5);
+}
+
+/* Price display */
+.price-large {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.price-medium {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.price-small {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.875rem;
+}
+
+/* Labels */
+.label-text {
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-size: 0.625rem;
+    color: hsl(var(--muted-foreground));
+    font-weight: 500;
+}
+
+/* Range visualization */
+.range-container {
+    position: relative;
+    height: 8px;
+    background: hsl(var(--surface-highlight));
+    border-radius: 4px;
+    overflow: visible;
+}
+
+.range-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.range-marker {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid hsl(var(--foreground));
+    z-index: 10;
+}
+
+/* Status indicators */
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.status-dot.live {
+    background-color: hsl(var(--primary));
+    box-shadow: 0 0 8px hsl(var(--primary));
+}
+
+.status-dot.closed {
+    background-color: hsl(var(--destructive));
+}
+
+/* Ticker tape */
+.ticker-tape {
+    height: 40px;
+    background-color: hsl(var(--surface));
+    border-top: 1px solid hsl(var(--border));
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+}
+
+.ticker-content {
+    display: flex;
+    gap: 3rem;
+    white-space: nowrap;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+}
+
+/* Buttons */
+.btn-terminal {
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.625rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--surface));
+    color: hsl(var(--foreground));
+    cursor: pointer;
+}
+
+.btn-terminal:hover {
+    border-color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.1);
+}
+
+.btn-terminal.primary {
+    background: hsl(var(--primary));
+    color: hsl(var(--primary-foreground));
+    border-color: hsl(var(--primary));
+}
+
+.btn-terminal.primary:hover {
+    background: hsl(var(--primary) / 0.9);
+    box-shadow: 0 0 15px hsl(var(--primary) / 0.4);
+}
+
+/* Selection highlight */
+.ticker-btn {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: hsl(var(--muted-foreground));
+}
+
+.ticker-btn:hover {
+    color: hsl(var(--foreground));
+    border-color: hsl(var(--border));
+}
+
+.ticker-btn.active {
+    color: hsl(var(--primary));
+    border-color: hsl(var(--primary));
+    background: hsl(var(--primary) / 0.1);
+}
+
+/* Loading skeleton */
+.skeleton {
+    background: linear-gradient(
+        90deg,
+        hsl(var(--surface-highlight)) 25%,
+        hsl(var(--surface)) 50%,
+        hsl(var(--surface-highlight)) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Tooltip */
+.tooltip-content {
+    background: hsl(var(--surface));
+    border: 1px solid hsl(var(--border));
+    padding: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
