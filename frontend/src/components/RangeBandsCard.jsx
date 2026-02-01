@@ -1,8 +1,7 @@
 import { Target } from "lucide-react";
 import { Button } from "./ui/button";
-import { formatNumber } from "./TradingComponents";
+import { formatNumber } from "../utils/formatters";
 
-// Range Bands Card
 export const RangeBandsCard = ({ rangeData, onSetAnchor, isLoading }) => {
     if (isLoading || !rangeData) {
         return (
@@ -16,15 +15,18 @@ export const RangeBandsCard = ({ rangeData, onSetAnchor, isLoading }) => {
     
     const position = Math.min(100, Math.max(0, rangeData.price_position_percent));
     const isInside = rangeData.is_inside_range;
+    const glowClass = isInside ? 'glow-green' : 'glow-red';
+    const statusClass = isInside ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500';
+    const markerClass = isInside ? 'bg-green-500 glow-green' : 'bg-red-500 glow-red';
     
     return (
-        <div className={`terminal-card col-span-2 card-hover ${isInside ? 'glow-green' : 'glow-red'}`} data-testid="range-bands-card">
+        <div className={`terminal-card col-span-2 card-hover ${glowClass}`} data-testid="range-bands-card">
             <div className="flex items-center justify-between mb-4">
                 <div>
                     <span className="label-text">Expected Range</span>
                     <h3 className="font-mono text-lg font-bold">Market Maker Bands</h3>
                 </div>
-                <div className={`px-3 py-1 font-mono text-xs uppercase tracking-wider ${isInside ? 'bg-green-500/20 text-green-500' : 'bg-red-500/20 text-red-500'}`} data-testid="range-status">
+                <div className={`px-3 py-1 font-mono text-xs uppercase tracking-wider ${statusClass}`} data-testid="range-status">
                     {isInside ? 'INSIDE RANGE' : 'OUTSIDE RANGE'}
                 </div>
             </div>
@@ -37,15 +39,8 @@ export const RangeBandsCard = ({ rangeData, onSetAnchor, isLoading }) => {
                 </div>
                 
                 <div className="range-container">
-                    <div 
-                        className="range-fill range-bar-track opacity-30" 
-                        style={{ width: '100%' }}
-                    ></div>
-                    <div 
-                        className={`range-marker ${isInside ? 'bg-green-500 glow-green' : 'bg-red-500 glow-red'}`}
-                        style={{ left: `${position}%` }}
-                        data-testid="price-marker"
-                    ></div>
+                    <div className="range-fill range-bar-track opacity-30" style={{ width: '100%' }}></div>
+                    <div className={`range-marker ${markerClass}`} style={{ left: `${position}%` }} data-testid="price-marker"></div>
                 </div>
                 
                 <div className="flex justify-between mt-2 text-xs text-muted-foreground font-mono">
@@ -62,11 +57,7 @@ export const RangeBandsCard = ({ rangeData, onSetAnchor, isLoading }) => {
                         {rangeData.anchor_price ? `$${formatNumber(rangeData.anchor_price)}` : 'Not Set'}
                     </p>
                 </div>
-                <Button 
-                    onClick={onSetAnchor}
-                    className="btn-terminal primary"
-                    data-testid="set-anchor-btn"
-                >
+                <Button onClick={onSetAnchor} className="btn-terminal primary" data-testid="set-anchor-btn">
                     <Target className="w-3 h-3 mr-2" />
                     SET 10AM ANCHOR
                 </Button>
