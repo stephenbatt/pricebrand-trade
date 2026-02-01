@@ -30,6 +30,7 @@ import { HistoricalRangesCard } from "./components/HistoricalRangesCard";
 import { StatsCard } from "./components/StatsCard";
 import { AllTickersPanel } from "./components/AllTickersPanel";
 import { TickerTape } from "./components/TickerTape";
+import { Scoreboard, TradingPanel } from "./components/TradingPanel";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
@@ -45,13 +46,16 @@ function App() {
     const [refreshInterval, setRefreshInterval] = useState(30);
     const [lastUpdate, setLastUpdate] = useState(null);
     
+    // Paper Trading State
+    const [scoreboard, setScoreboard] = useState(null);
+    const [openTrades, setOpenTrades] = useState([]);
+    
     const fetchTickers = useCallback(async () => {
         try {
             const response = await axios.get(`${API}/tickers`);
             setTickers(response.data);
         } catch (e) {
             console.error("Error fetching tickers:", e);
-            toast.error("Failed to load tickers");
         }
     }, []);
     
@@ -91,17 +95,37 @@ function App() {
         }
     }, []);
     
+    const fetchScoreboard = useCallback(async () => {
+        try {
+            const response = await axios.get(`${API}/scoreboard`);
+            setScoreboard(response.data);
+        } catch (e) {
+            console.error("Error fetching scoreboard:", e);
+        }
+    }, []);
+    
+    const fetchOpenTrades = useCallback(async () => {
+        try {
+            const response = await axios.get(`${API}/trades/open`);
+            setOpenTrades(response.data);
+        } catch (e) {
+            console.error("Error fetching open trades:", e);
+        }
+    }, []);
+    
     const refreshData = useCallback(async () => {
         setIsLoading(true);
         await Promise.all([
             fetchTickerData(selectedTicker),
             fetchRangeData(selectedTicker),
             fetchAllTickers(),
-            fetchMarketStatus()
+            fetchMarketStatus(),
+            fetchScoreboard(),
+            fetchOpenTrades()
         ]);
         setLastUpdate(new Date());
         setIsLoading(false);
-    }, [selectedTicker, fetchTickerData, fetchRangeData, fetchAllTickers, fetchMarketStatus]);
+    }, [selectedTicker, fetchTickerData, fetchRangeData, fetchAllTickers, fetchMarketStatus, fetchScoreboard, fetchOpenTrades]);
     
     const handleSetAnchor = async () => {
         if (!tickerData?.price) {
@@ -122,6 +146,50 @@ function App() {
         } catch (e) {
             console.error("Error setting anchor:", e);
             toast.error("Failed to set anchor");
+        }
+    };
+    
+    const handleTrade = async (symbol, direction, amount) => {
+        try {
+            const response = await axios.post(`${API}/trade`, {
+                symbol,
+                direction,
+                amount
+            });
+            toast.success(`${direction.toUpperCase()} trade opened: $${amount}`);
+            await fetchScoreboard();
+            await fetchOpenTrades();
+        } catch (e) {
+            console.error("Error opening trade:", e);
+            toast.error(e.response?.data?.detail || "Failed to open trade");
+        }
+    };
+    
+    const handleCloseTrade = async (tradeId) => {
+        try {
+            const response = await axios.post(`${API}/trade/close`, {
+                trade_id: tradeId
+            });
+            const pnl = response.data.pnl;
+            const isWin = response.data.is_win;
+            toast.success(`Trade closed: ${isWin ? '+' : ''}$${pnl.toFixed(2)} ${isWin ? '🎉' : ''}`);
+            await fetchScoreboard();
+            await fetchOpenTrades();
+        } catch (e) {
+            console.error("Error closing trade:", e);
+            toast.error("Failed to close trade");
+        }
+    };
+    
+    const handleResetAccount = async () => {
+        try {
+            await axios.post(`${API}/account/reset`);
+            toast.success("Account reset to $10,000");
+            await fetchScoreboard();
+            await fetchOpenTrades();
+        } catch (e) {
+            console.error("Error resetting account:", e);
+            toast.error("Failed to reset account");
         }
     };
     
@@ -221,23 +289,31 @@ function App() {
                 </header>
                 
                 <main className="main-content" data-testid="main-content">
+                    {/* Row 1: Price + Range Bands */}
                     <PriceCard data={tickerData} isLoading={isLoading && !tickerData} />
-                    
                     <RangeBandsCard 
                         rangeData={rangeData} 
                         onSetAnchor={handleSetAnchor}
                         isLoading={isLoading && !rangeData}
                     />
                     
+                    {/* Row 2: Historical + Trading Panel */}
                     <HistoricalRangesCard rangeData={rangeData} isLoading={isLoading && !rangeData} />
                     
-                    <AllTickersPanel 
-                        tickersData={allTickersData}
-                        selectedTicker={selectedTicker}
-                        onSelect={setSelectedTicker}
-                        isLoading={isLoading && allTickersData.length === 0}
-                    />
+                    <div className="md:col-span-2 space-y-4">
+                        <Scoreboard scoreboard={scoreboard} onReset={handleResetAccount} />
+                        <TradingPanel
+                            selectedTicker={selectedTicker}
+                            tickerData={tickerData}
+                            rangeData={rangeData}
+                            scoreboard={scoreboard}
+                            onTrade={handleTrade}
+                            onCloseTrade={handleCloseTrade}
+                            openTrades={openTrades}
+                        />
+                    </div>
                     
+                    {/* Row 3: Stats */}
                     <StatsCard 
                         title="Avg Daily Range" 
                         value={rangeData ? `$${formatNumber(rangeData.avg_daily_range)}` : '---'} 
