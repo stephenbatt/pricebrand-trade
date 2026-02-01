@@ -120,15 +120,16 @@ class PaperAccount(BaseModel):
 
 class TradeRequest(BaseModel):
     symbol: str
-    direction: str  # "long" or "short"
+    direction: str  # "inside" or "outside" (fence betting)
     amount: float  # Dollar amount to risk
+    fence_multiplier: float = 1.0  # 1.0 = normal, 1.5 = wider fence, 2.0 = very wide
     entry_price: Optional[float] = None
 
 class Trade(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     symbol: str
-    direction: str
+    direction: str  # "inside" or "outside"
     amount: float
     entry_price: float
     exit_price: Optional[float] = None
@@ -136,6 +137,7 @@ class Trade(BaseModel):
     status: str = "open"  # open, closed, expired
     high_band: float
     low_band: float
+    fence_multiplier: float = 1.0
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     closed_at: Optional[str] = None
 
