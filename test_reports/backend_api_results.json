@@ -1,0 +1,674 @@
+{
+  "timestamp": "2026-02-01T05:02:42.695417",
+  "summary": {
+    "tests_run": 24,
+    "tests_passed": 24,
+    "success_rate": 100.0
+  },
+  "test_results": [
+    {
+      "test_name": "API Root",
+      "method": "GET",
+      "endpoint": "",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "0DTE Trading Range Calculator API"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get Tickers",
+      "method": "GET",
+      "endpoint": "tickers",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "symbol": "SPY",
+          "name": "SPDR S&P 500 ETF",
+          "enabled": true
+        },
+        {
+          "symbol": "SPX",
+          "name": "S&P 500 Index",
+          "enabled": true
+        },
+        {
+          "symbol": "QQQ",
+          "name": "Invesco QQQ Trust",
+          "enabled": true
+        },
+        {
+          "symbol": "BTC-USD",
+          "name": "Bitcoin USD",
+          "enabled": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "test_name": "Get SPY Data",
+      "method": "GET",
+      "endpoint": "ticker/SPY",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "symbol": "SPY",
+        "name": "SPDR S&P 500 ETF",
+        "price": 691.97,
+        "change": 0.0,
+        "change_percent": 0.0,
+        "high": 694.21,
+        "low": 687.12,
+        "open_price": 691.97,
+        "volume": 101062300,
+        "last_updated": "2026-02-01T05:02:39.637590+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get SPY Range",
+      "method": "GET",
+      "endpoint": "range/SPY",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "symbol": "SPY",
+        "current_price": 691.97,
+        "anchor_price": null,
+        "anchor_time": null,
+        "avg_daily_range": 5.42,
+        "high_band": 694.68,
+        "low_band": 689.26,
+        "is_inside_range": true,
+        "price_position_percent": 50.0,
+        "historical_ranges": [
+          {
+            "date": "2026-01-23",
+            "high": 690.96,
+            "low": 687.16,
+            "range_value": 3.8,
+            "open_price": 688.15,
+            "close_price": 689.23
+          },
+          {
+            "date": "2026-01-26",
+            "high": 694.13,
+            "low": 689.92,
+            "range_value": 4.21,
+            "open_price": 690.49,
+            "close_price": 692.73
+          },
+          {
+            "date": "2026-01-27",
+            "high": 696.53,
+            "low": 693.57,
+            "range_value": 2.96,
+            "open_price": 694.18,
+            "close_price": 695.49
+          },
+          {
+            "date": "2026-01-28",
+            "high": 697.84,
+            "low": 693.94,
+            "range_value": 3.9,
+            "open_price": 697.05,
+            "close_price": 695.42
+          },
+          {
+            "date": "2026-01-29",
+            "high": 697.06,
+            "low": 684.83,
+            "range_value": 12.23,
+            "open_price": 696.39,
+            "close_price": 694.04
+          }
+        ],
+        "last_updated": "2026-02-01T05:02:39.677186+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Set SPY Anchor",
+      "method": "POST",
+      "endpoint": "anchor",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "id": "1f134a30-34c9-4d78-9ce7-76bbed1ec531",
+        "symbol": "SPY",
+        "anchor_price": 691.97,
+        "anchor_time": "2026-02-01T05:02:39.715779+00:00",
+        "high_band": 694.68,
+        "low_band": 689.26,
+        "avg_range": 5.42,
+        "created_at": "2026-02-01T05:02:39.715782+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get SPY Anchors",
+      "method": "GET",
+      "endpoint": "anchors/SPY",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "id": "1f134a30-34c9-4d78-9ce7-76bbed1ec531",
+          "symbol": "SPY",
+          "anchor_price": 691.97,
+          "anchor_time": "2026-02-01T05:02:39.715779+00:00",
+          "high_band": 694.68,
+          "low_band": 689.26,
+          "avg_range": 5.42,
+          "created_at": "2026-02-01T05:02:39.715782+00:00"
+        }
+      ],
+      "error": null
+    },
+    {
+      "test_name": "Clear SPY Anchors",
+      "method": "DELETE",
+      "endpoint": "anchors/SPY",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "Cleared anchors for SPY"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get SPX Data",
+      "method": "GET",
+      "endpoint": "ticker/SPX",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "symbol": "SPX",
+        "name": "S&P 500 Index",
+        "price": 6939.03,
+        "change": 0.0,
+        "change_percent": 0.0,
+        "high": 6964.09,
+        "low": 6893.48,
+        "open_price": 6939.03,
+        "volume": 4261589000,
+        "last_updated": "2026-02-01T05:02:39.887165+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get SPX Range",
+      "method": "GET",
+      "endpoint": "range/SPX",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "symbol": "SPX",
+        "current_price": 6939.03,
+        "anchor_price": null,
+        "anchor_time": null,
+        "avg_daily_range": 54.27,
+        "high_band": 6966.17,
+        "low_band": 6911.89,
+        "is_inside_range": true,
+        "price_position_percent": 50.0,
+        "historical_ranges": [
+          {
+            "date": "2026-01-23",
+            "high": 6932.96,
+            "low": 6895.5,
+            "range_value": 37.46,
+            "open_price": 6907.85,
+            "close_price": 6915.61
+          },
+          {
+            "date": "2026-01-26",
+            "high": 6964.66,
+            "low": 6921.6,
+            "range_value": 43.06,
+            "open_price": 6923.23,
+            "close_price": 6950.23
+          },
+          {
+            "date": "2026-01-27",
+            "high": 6988.82,
+            "low": 6958.83,
+            "range_value": 29.99,
+            "open_price": 6965.96,
+            "close_price": 6978.6
+          },
+          {
+            "date": "2026-01-28",
+            "high": 7002.28,
+            "low": 6963.46,
+            "range_value": 38.82,
+            "open_price": 7002.0,
+            "close_price": 6978.03
+          },
+          {
+            "date": "2026-01-29",
+            "high": 6992.84,
+            "low": 6870.8,
+            "range_value": 122.04,
+            "open_price": 6977.74,
+            "close_price": 6969.01
+          }
+        ],
+        "last_updated": "2026-02-01T05:02:40.408120+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Set SPX Anchor",
+      "method": "POST",
+      "endpoint": "anchor",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "id": "9f3879c2-73ea-4ab7-8a39-cad3ba38d4b2",
+        "symbol": "SPX",
+        "anchor_price": 6939.03,
+        "anchor_time": "2026-02-01T05:02:40.451660+00:00",
+        "high_band": 6966.17,
+        "low_band": 6911.89,
+        "avg_range": 54.27,
+        "created_at": "2026-02-01T05:02:40.451663+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get SPX Anchors",
+      "method": "GET",
+      "endpoint": "anchors/SPX",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "id": "9f3879c2-73ea-4ab7-8a39-cad3ba38d4b2",
+          "symbol": "SPX",
+          "anchor_price": 6939.03,
+          "anchor_time": "2026-02-01T05:02:40.451660+00:00",
+          "high_band": 6966.17,
+          "low_band": 6911.89,
+          "avg_range": 54.27,
+          "created_at": "2026-02-01T05:02:40.451663+00:00"
+        }
+      ],
+      "error": null
+    },
+    {
+      "test_name": "Clear SPX Anchors",
+      "method": "DELETE",
+      "endpoint": "anchors/SPX",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "Cleared anchors for SPX"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get QQQ Data",
+      "method": "GET",
+      "endpoint": "ticker/QQQ",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "symbol": "QQQ",
+        "name": "Invesco QQQ Trust",
+        "price": 621.87,
+        "change": 0.0,
+        "change_percent": 0.0,
+        "high": 628.26,
+        "low": 619.3,
+        "open_price": 621.87,
+        "volume": 62080899,
+        "last_updated": "2026-02-01T05:02:40.571071+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get QQQ Range",
+      "method": "GET",
+      "endpoint": "range/QQQ",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "symbol": "QQQ",
+        "current_price": 621.87,
+        "anchor_price": null,
+        "anchor_time": null,
+        "avg_daily_range": 7.43,
+        "high_band": 625.58,
+        "low_band": 618.16,
+        "is_inside_range": true,
+        "price_position_percent": 50.0,
+        "historical_ranges": [
+          {
+            "date": "2026-01-23",
+            "high": 625.4,
+            "low": 618.65,
+            "range_value": 6.75,
+            "open_price": 619.73,
+            "close_price": 622.72
+          },
+          {
+            "date": "2026-01-26",
+            "high": 627.61,
+            "low": 622.12,
+            "range_value": 5.49,
+            "open_price": 623.21,
+            "close_price": 625.46
+          },
+          {
+            "date": "2026-01-27",
+            "high": 632.04,
+            "low": 627.34,
+            "range_value": 4.7,
+            "open_price": 628.91,
+            "close_price": 631.13
+          },
+          {
+            "date": "2026-01-28",
+            "high": 636.6,
+            "low": 631.81,
+            "range_value": 4.79,
+            "open_price": 635.46,
+            "close_price": 633.22
+          },
+          {
+            "date": "2026-01-29",
+            "high": 633.67,
+            "low": 618.27,
+            "range_value": 15.4,
+            "open_price": 632.65,
+            "close_price": 629.43
+          }
+        ],
+        "last_updated": "2026-02-01T05:02:40.866467+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Set QQQ Anchor",
+      "method": "POST",
+      "endpoint": "anchor",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "id": "801a2d83-771a-4752-b780-5be4678d2801",
+        "symbol": "QQQ",
+        "anchor_price": 621.87,
+        "anchor_time": "2026-02-01T05:02:40.906050+00:00",
+        "high_band": 625.58,
+        "low_band": 618.16,
+        "avg_range": 7.43,
+        "created_at": "2026-02-01T05:02:40.906054+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get QQQ Anchors",
+      "method": "GET",
+      "endpoint": "anchors/QQQ",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "id": "801a2d83-771a-4752-b780-5be4678d2801",
+          "symbol": "QQQ",
+          "anchor_price": 621.87,
+          "anchor_time": "2026-02-01T05:02:40.906050+00:00",
+          "high_band": 625.58,
+          "low_band": 618.16,
+          "avg_range": 7.43,
+          "created_at": "2026-02-01T05:02:40.906054+00:00"
+        }
+      ],
+      "error": null
+    },
+    {
+      "test_name": "Clear QQQ Anchors",
+      "method": "DELETE",
+      "endpoint": "anchors/QQQ",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "Cleared anchors for QQQ"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get BTC-USD Data",
+      "method": "GET",
+      "endpoint": "ticker/BTC-USD",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "symbol": "BTC-USD",
+        "name": "Bitcoin USD",
+        "price": 78940.93,
+        "change": 0.0,
+        "change_percent": 0.0,
+        "high": 79284.5,
+        "low": 78260.73,
+        "open_price": 78940.93,
+        "volume": 73739960320,
+        "last_updated": "2026-02-01T05:02:41.023248+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get BTC-USD Range",
+      "method": "GET",
+      "endpoint": "range/BTC-USD",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "symbol": "BTC-USD",
+        "current_price": 78914.47,
+        "anchor_price": null,
+        "anchor_time": null,
+        "avg_daily_range": 3142.14,
+        "high_band": 80485.54,
+        "low_band": 77343.4,
+        "is_inside_range": true,
+        "price_position_percent": 50.0,
+        "historical_ranges": [
+          {
+            "date": "2026-01-27",
+            "high": 88743.07,
+            "low": 86429.29,
+            "range_value": 2313.78,
+            "open_price": 86566.52,
+            "close_price": 88267.14
+          },
+          {
+            "date": "2026-01-28",
+            "high": 89427.12,
+            "low": 87228.92,
+            "range_value": 2198.2,
+            "open_price": 88257.48,
+            "close_price": 89102.57
+          },
+          {
+            "date": "2026-01-29",
+            "high": 90439.29,
+            "low": 88721.46,
+            "range_value": 1717.83,
+            "open_price": 89104.05,
+            "close_price": 89184.57
+          },
+          {
+            "date": "2026-01-30",
+            "high": 89200.78,
+            "low": 83250.6,
+            "range_value": 5950.18,
+            "open_price": 89169.85,
+            "close_price": 84561.59
+          },
+          {
+            "date": "2026-01-31",
+            "high": 84602.16,
+            "low": 81071.48,
+            "range_value": 3530.69,
+            "open_price": 84562.73,
+            "close_price": 84128.66
+          }
+        ],
+        "last_updated": "2026-02-01T05:02:41.655221+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Set BTC-USD Anchor",
+      "method": "POST",
+      "endpoint": "anchor",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "id": "18941a22-f137-49ad-b099-57c7cb043df1",
+        "symbol": "BTC-USD",
+        "anchor_price": 78940.93,
+        "anchor_time": "2026-02-01T05:02:41.690146+00:00",
+        "high_band": 80512.0,
+        "low_band": 77369.86,
+        "avg_range": 3142.14,
+        "created_at": "2026-02-01T05:02:41.690149+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get BTC-USD Anchors",
+      "method": "GET",
+      "endpoint": "anchors/BTC-USD",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "id": "18941a22-f137-49ad-b099-57c7cb043df1",
+          "symbol": "BTC-USD",
+          "anchor_price": 78940.93,
+          "anchor_time": "2026-02-01T05:02:41.690146+00:00",
+          "high_band": 80512.0,
+          "low_band": 77369.86,
+          "avg_range": 3142.14,
+          "created_at": "2026-02-01T05:02:41.690149+00:00"
+        }
+      ],
+      "error": null
+    },
+    {
+      "test_name": "Clear BTC-USD Anchors",
+      "method": "DELETE",
+      "endpoint": "anchors/BTC-USD",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "Cleared anchors for BTC-USD"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Market Status",
+      "method": "GET",
+      "endpoint": "market-status",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "is_open": false,
+        "status": "MARKET CLOSED",
+        "current_time_est": "2026-02-01 00:02:41 EST",
+        "market_open_time": "9:30 AM EST",
+        "market_close_time": "4:00 PM EST",
+        "time_remaining_seconds": 120438,
+        "time_remaining_formatted": "1 day, 9:27:18"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Multi-Ticker Data",
+      "method": "GET",
+      "endpoint": "multi-ticker",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "symbol": "SPY",
+          "name": "SPDR S&P 500 ETF",
+          "price": 691.97,
+          "change": 0.0,
+          "change_percent": 0.0,
+          "high": 694.21,
+          "low": 687.12,
+          "open_price": 691.97,
+          "volume": 101062300,
+          "last_updated": "2026-02-01T05:02:42.087668+00:00"
+        },
+        {
+          "symbol": "SPX",
+          "name": "S&P 500 Index",
+          "price": 6939.03,
+          "change": 0.0,
+          "change_percent": 0.0,
+          "high": 6964.09,
+          "low": 6893.48,
+          "open_price": 6939.03,
+          "volume": 4261589000,
+          "last_updated": "2026-02-01T05:02:42.288336+00:00"
+        },
+        {
+          "symbol": "QQQ",
+          "name": "Invesco QQQ Trust",
+          "price": 621.87,
+          "change": 0.0,
+          "change_percent": 0.0,
+          "high": 628.26,
+          "low": 619.3,
+          "open_price": 621.87,
+          "volume": 62080899,
+          "last_updated": "2026-02-01T05:02:42.489006+00:00"
+        },
+        {
+          "symbol": "BTC-USD",
+          "name": "Bitcoin USD",
+          "price": 78940.93,
+          "change": 0.0,
+          "change_percent": 0.0,
+          "high": 79284.5,
+          "low": 78260.73,
+          "open_price": 78940.93,
+          "volume": 73739960320,
+          "last_updated": "2026-02-01T05:02:42.689714+00:00"
+        }
+      ],
+      "error": null
+    }
+  ]
+}
