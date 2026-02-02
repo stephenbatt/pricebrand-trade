@@ -209,6 +209,21 @@ function App() {
         }
     };
     
+    const handleSettleAll = async () => {
+        try {
+            const response = await axios.post(`${API}/auto-settle`);
+            const settled = response.data.settled_trades || [];
+            const wins = settled.filter(t => t.is_win).length;
+            const losses = settled.length - wins;
+            toast.success(`Settled ${settled.length} bets: ${wins} wins, ${losses} losses`);
+            await fetchScoreboard();
+            await fetchOpenTrades();
+        } catch (e) {
+            console.error("Error settling trades:", e);
+            toast.error("Failed to settle bets");
+        }
+    };
+    
     useEffect(() => {
         fetchTickers();
         refreshData();
