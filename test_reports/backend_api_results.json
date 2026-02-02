@@ -1,9 +1,9 @@
 {
-  "timestamp": "2026-02-01T05:02:42.695417",
+  "timestamp": "2026-02-02T00:03:34.453437",
   "summary": {
-    "tests_run": 24,
-    "tests_passed": 24,
-    "success_rate": 100.0
+    "tests_run": 38,
+    "tests_passed": 37,
+    "success_rate": 97.36842105263158
   },
   "test_results": [
     {
@@ -60,13 +60,13 @@
         "symbol": "SPY",
         "name": "SPDR S&P 500 ETF",
         "price": 691.97,
-        "change": 0.0,
+        "change": 691.97,
         "change_percent": 0.0,
         "high": 694.21,
         "low": 687.12,
-        "open_price": 691.97,
+        "open_price": 0.0,
         "volume": 101062300,
-        "last_updated": "2026-02-01T05:02:39.637590+00:00"
+        "last_updated": "2026-02-02T00:03:31.889195+00:00"
       },
       "error": null
     },
@@ -129,7 +129,7 @@
             "close_price": 694.04
           }
         ],
-        "last_updated": "2026-02-01T05:02:39.677186+00:00"
+        "last_updated": "2026-02-02T00:03:31.931629+00:00"
       },
       "error": null
     },
@@ -141,14 +141,14 @@
       "actual_status": 200,
       "success": true,
       "response_data": {
-        "id": "1f134a30-34c9-4d78-9ce7-76bbed1ec531",
+        "id": "f1895730-9959-4030-8f58-4db952129cd5",
         "symbol": "SPY",
         "anchor_price": 691.97,
-        "anchor_time": "2026-02-01T05:02:39.715779+00:00",
+        "anchor_time": "2026-02-02T00:03:31.966969+00:00",
         "high_band": 694.68,
         "low_band": 689.26,
         "avg_range": 5.42,
-        "created_at": "2026-02-01T05:02:39.715782+00:00"
+        "created_at": "2026-02-02T00:03:31.966972+00:00"
       },
       "error": null
     },
@@ -161,14 +161,14 @@
       "success": true,
       "response_data": [
         {
-          "id": "1f134a30-34c9-4d78-9ce7-76bbed1ec531",
+          "id": "f1895730-9959-4030-8f58-4db952129cd5",
           "symbol": "SPY",
           "anchor_price": 691.97,
-          "anchor_time": "2026-02-01T05:02:39.715779+00:00",
+          "anchor_time": "2026-02-02T00:03:31.966969+00:00",
           "high_band": 694.68,
           "low_band": 689.26,
           "avg_range": 5.42,
-          "created_at": "2026-02-01T05:02:39.715782+00:00"
+          "created_at": "2026-02-02T00:03:31.966972+00:00"
         }
       ],
       "error": null
@@ -196,13 +196,13 @@
         "symbol": "SPX",
         "name": "S&P 500 Index",
         "price": 6939.03,
-        "change": 0.0,
+        "change": 6939.03,
         "change_percent": 0.0,
         "high": 6964.09,
         "low": 6893.48,
-        "open_price": 6939.03,
+        "open_price": 0.0,
         "volume": 4261589000,
-        "last_updated": "2026-02-01T05:02:39.887165+00:00"
+        "last_updated": "2026-02-02T00:03:32.098858+00:00"
       },
       "error": null
     },
@@ -265,7 +265,7 @@
             "close_price": 6969.01
           }
         ],
-        "last_updated": "2026-02-01T05:02:40.408120+00:00"
+        "last_updated": "2026-02-02T00:03:32.339361+00:00"
       },
       "error": null
     },
@@ -277,14 +277,14 @@
       "actual_status": 200,
       "success": true,
       "response_data": {
-        "id": "9f3879c2-73ea-4ab7-8a39-cad3ba38d4b2",
+        "id": "ff6244b7-05fe-4a04-9c80-0f7428fd4f95",
         "symbol": "SPX",
         "anchor_price": 6939.03,
-        "anchor_time": "2026-02-01T05:02:40.451660+00:00",
+        "anchor_time": "2026-02-02T00:03:32.419024+00:00",
         "high_band": 6966.17,
         "low_band": 6911.89,
         "avg_range": 54.27,
-        "created_at": "2026-02-01T05:02:40.451663+00:00"
+        "created_at": "2026-02-02T00:03:32.419026+00:00"
       },
       "error": null
     },
@@ -297,14 +297,24 @@
       "success": true,
       "response_data": [
         {
-          "id": "9f3879c2-73ea-4ab7-8a39-cad3ba38d4b2",
+          "id": "ff6244b7-05fe-4a04-9c80-0f7428fd4f95",
           "symbol": "SPX",
           "anchor_price": 6939.03,
-          "anchor_time": "2026-02-01T05:02:40.451660+00:00",
+          "anchor_time": "2026-02-02T00:03:32.419024+00:00",
           "high_band": 6966.17,
           "low_band": 6911.89,
           "avg_range": 54.27,
-          "created_at": "2026-02-01T05:02:40.451663+00:00"
+          "created_at": "2026-02-02T00:03:32.419026+00:00"
+        },
+        {
+          "id": "72762483-eca2-4818-9534-cf7684ba4465",
+          "symbol": "SPX",
+          "anchor_price": 6939.03,
+          "anchor_time": "2026-02-01T05:21:25.783721+00:00",
+          "high_band": 6966.17,
+          "low_band": 6911.89,
+          "avg_range": 54.27,
+          "created_at": "2026-02-01T05:21:25.783724+00:00"
         }
       ],
       "error": null
@@ -332,13 +342,13 @@
         "symbol": "QQQ",
         "name": "Invesco QQQ Trust",
         "price": 621.87,
-        "change": 0.0,
+        "change": 621.87,
         "change_percent": 0.0,
         "high": 628.26,
         "low": 619.3,
-        "open_price": 621.87,
-        "volume": 62080899,
-        "last_updated": "2026-02-01T05:02:40.571071+00:00"
+        "open_price": 0.0,
+        "volume": 65650714,
+        "last_updated": "2026-02-02T00:03:32.578838+00:00"
       },
       "error": null
     },
@@ -401,7 +411,7 @@
             "close_price": 629.43
           }
         ],
-        "last_updated": "2026-02-01T05:02:40.866467+00:00"
+        "last_updated": "2026-02-02T00:03:32.832934+00:00"
       },
       "error": null
     },
@@ -413,14 +423,14 @@
       "actual_status": 200,
       "success": true,
       "response_data": {
-        "id": "801a2d83-771a-4752-b780-5be4678d2801",
+        "id": "688931a7-cc9c-4947-b457-fe3e00f2b1a7",
         "symbol": "QQQ",
         "anchor_price": 621.87,
-        "anchor_time": "2026-02-01T05:02:40.906050+00:00",
+        "anchor_time": "2026-02-02T00:03:32.869913+00:00",
         "high_band": 625.58,
         "low_band": 618.16,
         "avg_range": 7.43,
-        "created_at": "2026-02-01T05:02:40.906054+00:00"
+        "created_at": "2026-02-02T00:03:32.869915+00:00"
       },
       "error": null
     },
@@ -433,14 +443,14 @@
       "success": true,
       "response_data": [
         {
-          "id": "801a2d83-771a-4752-b780-5be4678d2801",
+          "id": "688931a7-cc9c-4947-b457-fe3e00f2b1a7",
           "symbol": "QQQ",
           "anchor_price": 621.87,
-          "anchor_time": "2026-02-01T05:02:40.906050+00:00",
+          "anchor_time": "2026-02-02T00:03:32.869913+00:00",
           "high_band": 625.58,
           "low_band": 618.16,
           "avg_range": 7.43,
-          "created_at": "2026-02-01T05:02:40.906054+00:00"
+          "created_at": "2026-02-02T00:03:32.869915+00:00"
         }
       ],
       "error": null
@@ -467,14 +477,14 @@
       "response_data": {
         "symbol": "BTC-USD",
         "name": "Bitcoin USD",
-        "price": 78940.93,
-        "change": 0.0,
+        "price": 76937.7,
+        "change": 76937.7,
         "change_percent": 0.0,
         "high": 79284.5,
-        "low": 78260.73,
-        "open_price": 78940.93,
-        "volume": 73739960320,
-        "last_updated": "2026-02-01T05:02:41.023248+00:00"
+        "low": 75768.72,
+        "open_price": 0.0,
+        "volume": 53034946560,
+        "last_updated": "2026-02-02T00:03:32.980064+00:00"
       },
       "error": null
     },
@@ -487,23 +497,15 @@
       "success": true,
       "response_data": {
         "symbol": "BTC-USD",
-        "current_price": 78914.47,
+        "current_price": 76937.7,
         "anchor_price": null,
         "anchor_time": null,
-        "avg_daily_range": 3142.14,
-        "high_band": 80485.54,
-        "low_band": 77343.4,
+        "avg_daily_range": 4343.59,
+        "high_band": 79109.49,
+        "low_band": 74765.9,
         "is_inside_range": true,
         "price_position_percent": 50.0,
         "historical_ranges": [
-          {
-            "date": "2026-01-27",
-            "high": 88743.07,
-            "low": 86429.29,
-            "range_value": 2313.78,
-            "open_price": 86566.52,
-            "close_price": 88267.14
-          },
           {
             "date": "2026-01-28",
             "high": 89427.12,
@@ -535,9 +537,17 @@
             "range_value": 3530.69,
             "open_price": 84562.73,
             "close_price": 84128.66
+          },
+          {
+            "date": "2026-02-01",
+            "high": 84136.92,
+            "low": 75815.88,
+            "range_value": 8321.04,
+            "open_price": 84126.5,
+            "close_price": 78621.12
           }
         ],
-        "last_updated": "2026-02-01T05:02:41.655221+00:00"
+        "last_updated": "2026-02-02T00:03:33.285279+00:00"
       },
       "error": null
     },
@@ -549,14 +559,14 @@
       "actual_status": 200,
       "success": true,
       "response_data": {
-        "id": "18941a22-f137-49ad-b099-57c7cb043df1",
+        "id": "20a8fba1-791d-4473-802e-b4916ed55918",
         "symbol": "BTC-USD",
-        "anchor_price": 78940.93,
-        "anchor_time": "2026-02-01T05:02:41.690146+00:00",
-        "high_band": 80512.0,
-        "low_band": 77369.86,
-        "avg_range": 3142.14,
-        "created_at": "2026-02-01T05:02:41.690149+00:00"
+        "anchor_price": 76937.7,
+        "anchor_time": "2026-02-02T00:03:33.322788+00:00",
+        "high_band": 79109.49,
+        "low_band": 74765.91,
+        "avg_range": 4343.59,
+        "created_at": "2026-02-02T00:03:33.322790+00:00"
       },
       "error": null
     },
@@ -569,14 +579,44 @@
       "success": true,
       "response_data": [
         {
-          "id": "18941a22-f137-49ad-b099-57c7cb043df1",
+          "id": "20a8fba1-791d-4473-802e-b4916ed55918",
           "symbol": "BTC-USD",
-          "anchor_price": 78940.93,
-          "anchor_time": "2026-02-01T05:02:41.690146+00:00",
-          "high_band": 80512.0,
-          "low_band": 77369.86,
+          "anchor_price": 76937.7,
+          "anchor_time": "2026-02-02T00:03:33.322788+00:00",
+          "high_band": 79109.49,
+          "low_band": 74765.91,
+          "avg_range": 4343.59,
+          "created_at": "2026-02-02T00:03:33.322790+00:00"
+        },
+        {
+          "id": "d7f1c292-389b-4eec-a229-dc561bb245dc",
+          "symbol": "BTC-USD",
+          "anchor_price": 76701.95,
+          "anchor_time": "2026-02-01T21:19:35.546846+00:00",
+          "high_band": 78873.74,
+          "low_band": 74530.16,
+          "avg_range": 4343.59,
+          "created_at": "2026-02-01T21:19:35.546849+00:00"
+        },
+        {
+          "id": "dc6ee2f9-7d41-4590-97c9-25a0adf958c3",
+          "symbol": "BTC-USD",
+          "anchor_price": 76701.95,
+          "anchor_time": "2026-02-01T21:19:32.242246+00:00",
+          "high_band": 78873.74,
+          "low_band": 74530.16,
+          "avg_range": 4343.59,
+          "created_at": "2026-02-01T21:19:32.242249+00:00"
+        },
+        {
+          "id": "c2612880-fd5b-4e93-bad9-3592020951b8",
+          "symbol": "BTC-USD",
+          "anchor_price": 78914.47,
+          "anchor_time": "2026-02-01T05:03:20.154064+00:00",
+          "high_band": 80485.54,
+          "low_band": 77343.4,
           "avg_range": 3142.14,
-          "created_at": "2026-02-01T05:02:41.690149+00:00"
+          "created_at": "2026-02-01T05:03:20.154068+00:00"
         }
       ],
       "error": null
@@ -603,11 +643,11 @@
       "response_data": {
         "is_open": false,
         "status": "MARKET CLOSED",
-        "current_time_est": "2026-02-01 00:02:41 EST",
+        "current_time_est": "2026-02-01 19:03:33 EST",
         "market_open_time": "9:30 AM EST",
         "market_close_time": "4:00 PM EST",
-        "time_remaining_seconds": 120438,
-        "time_remaining_formatted": "1 day, 9:27:18"
+        "time_remaining_seconds": 51986,
+        "time_remaining_formatted": "14:26:26"
       },
       "error": null
     },
@@ -623,51 +663,468 @@
           "symbol": "SPY",
           "name": "SPDR S&P 500 ETF",
           "price": 691.97,
-          "change": 0.0,
+          "change": 691.97,
           "change_percent": 0.0,
           "high": 694.21,
           "low": 687.12,
-          "open_price": 691.97,
+          "open_price": 0.0,
           "volume": 101062300,
-          "last_updated": "2026-02-01T05:02:42.087668+00:00"
+          "last_updated": "2026-02-02T00:03:33.605552+00:00"
         },
         {
           "symbol": "SPX",
           "name": "S&P 500 Index",
           "price": 6939.03,
-          "change": 0.0,
+          "change": 6939.03,
           "change_percent": 0.0,
           "high": 6964.09,
           "low": 6893.48,
-          "open_price": 6939.03,
+          "open_price": 0.0,
           "volume": 4261589000,
-          "last_updated": "2026-02-01T05:02:42.288336+00:00"
+          "last_updated": "2026-02-02T00:03:33.705934+00:00"
         },
         {
           "symbol": "QQQ",
           "name": "Invesco QQQ Trust",
           "price": 621.87,
-          "change": 0.0,
+          "change": 621.87,
           "change_percent": 0.0,
           "high": 628.26,
           "low": 619.3,
-          "open_price": 621.87,
-          "volume": 62080899,
-          "last_updated": "2026-02-01T05:02:42.489006+00:00"
+          "open_price": 0.0,
+          "volume": 65650714,
+          "last_updated": "2026-02-02T00:03:33.806277+00:00"
         },
         {
           "symbol": "BTC-USD",
           "name": "Bitcoin USD",
-          "price": 78940.93,
-          "change": 0.0,
+          "price": 76937.7,
+          "change": 76937.7,
           "change_percent": 0.0,
           "high": 79284.5,
-          "low": 78260.73,
-          "open_price": 78940.93,
-          "volume": 73739960320,
-          "last_updated": "2026-02-01T05:02:42.689714+00:00"
+          "low": 75768.72,
+          "open_price": 0.0,
+          "volume": 53034946560,
+          "last_updated": "2026-02-02T00:03:33.906619+00:00"
         }
       ],
+      "error": null
+    },
+    {
+      "test_name": "Get Account",
+      "method": "GET",
+      "endpoint": "account",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "id": "8e279bf9-703f-451d-afcb-9fe248457542",
+        "balance": 9996.0,
+        "initial_balance": 10000.0,
+        "total_trades": 2,
+        "wins": 0,
+        "losses": 0,
+        "total_pnl": 0.0,
+        "created_at": "2026-02-01T23:13:47.723494+00:00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Reset Account",
+      "method": "POST",
+      "endpoint": "account/reset",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "Account reset",
+        "account": {
+          "id": "c0996185-73f1-4b07-a111-1aa5440ea668",
+          "balance": 10000.0,
+          "initial_balance": 10000.0,
+          "total_trades": 0,
+          "wins": 0,
+          "losses": 0,
+          "total_pnl": 0.0,
+          "created_at": "2026-02-02T00:03:33.983739+00:00"
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "Reset Account for Betting",
+      "method": "POST",
+      "endpoint": "account/reset",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "Account reset",
+        "account": {
+          "id": "344e7a6e-8b7f-4cae-bca2-70edb8e974f0",
+          "balance": 10000.0,
+          "initial_balance": 10000.0,
+          "total_trades": 0,
+          "wins": 0,
+          "losses": 0,
+          "total_pnl": 0.0,
+          "created_at": "2026-02-02T00:03:34.022133+00:00"
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "BET INSIDE (1x fence)",
+      "method": "POST",
+      "endpoint": "trade",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "BET INSIDE opened",
+        "trade": {
+          "id": "c1c05233-fd1a-4a2e-a5fb-23adbb0fadd2",
+          "symbol": "SPY",
+          "direction": "inside",
+          "amount": 100.0,
+          "entry_price": 691.97,
+          "exit_price": null,
+          "pnl": null,
+          "status": "open",
+          "high_band": 694.68,
+          "low_band": 689.26,
+          "fence_multiplier": 1.0,
+          "created_at": "2026-02-02T00:03:34.058333+00:00",
+          "closed_at": null
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "BET OUTSIDE (1.5x fence)",
+      "method": "POST",
+      "endpoint": "trade",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "BET OUTSIDE opened",
+        "trade": {
+          "id": "13297931-bd40-4ea9-9187-6659f947355f",
+          "symbol": "SPY",
+          "direction": "outside",
+          "amount": 200.0,
+          "entry_price": 691.97,
+          "exit_price": null,
+          "pnl": null,
+          "status": "open",
+          "high_band": 696.04,
+          "low_band": 687.9,
+          "fence_multiplier": 1.5,
+          "created_at": "2026-02-02T00:03:34.102775+00:00",
+          "closed_at": null
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "BET INSIDE (1.25x fence)",
+      "method": "POST",
+      "endpoint": "trade",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "BET INSIDE opened",
+        "trade": {
+          "id": "6a83e30d-da31-421d-a508-863e6b80f7ee",
+          "symbol": "SPY",
+          "direction": "inside",
+          "amount": 50.0,
+          "entry_price": 691.97,
+          "exit_price": null,
+          "pnl": null,
+          "status": "open",
+          "high_band": 695.36,
+          "low_band": 688.58,
+          "fence_multiplier": 1.25,
+          "created_at": "2026-02-02T00:03:34.140868+00:00",
+          "closed_at": null
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "BET INSIDE (2.0x fence)",
+      "method": "POST",
+      "endpoint": "trade",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "BET INSIDE opened",
+        "trade": {
+          "id": "aadfbd4d-3a9b-4312-8df5-94b986af58bf",
+          "symbol": "SPY",
+          "direction": "inside",
+          "amount": 50.0,
+          "entry_price": 691.97,
+          "exit_price": null,
+          "pnl": null,
+          "status": "open",
+          "high_band": 697.39,
+          "low_band": 686.55,
+          "fence_multiplier": 2.0,
+          "created_at": "2026-02-02T00:03:34.180739+00:00",
+          "closed_at": null
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get Open Trades",
+      "method": "GET",
+      "endpoint": "trades/open",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "id": "c1c05233-fd1a-4a2e-a5fb-23adbb0fadd2",
+          "symbol": "SPY",
+          "direction": "inside",
+          "amount": 100.0,
+          "entry_price": 691.97,
+          "exit_price": null,
+          "pnl": null,
+          "status": "open",
+          "high_band": 694.68,
+          "low_band": 689.26,
+          "fence_multiplier": 1.0,
+          "created_at": "2026-02-02T00:03:34.058333+00:00",
+          "closed_at": null,
+          "current_price": 691.97,
+          "unrealized_pnl": 0.0,
+          "is_inside_range": true
+        },
+        {
+          "id": "13297931-bd40-4ea9-9187-6659f947355f",
+          "symbol": "SPY",
+          "direction": "outside",
+          "amount": 200.0,
+          "entry_price": 691.97,
+          "exit_price": null,
+          "pnl": null,
+          "status": "open",
+          "high_band": 696.04,
+          "low_band": 687.9,
+          "fence_multiplier": 1.5,
+          "created_at": "2026-02-02T00:03:34.102775+00:00",
+          "closed_at": null,
+          "current_price": 691.97,
+          "unrealized_pnl": 0.0,
+          "is_inside_range": true
+        },
+        {
+          "id": "6a83e30d-da31-421d-a508-863e6b80f7ee",
+          "symbol": "SPY",
+          "direction": "inside",
+          "amount": 50.0,
+          "entry_price": 691.97,
+          "exit_price": null,
+          "pnl": null,
+          "status": "open",
+          "high_band": 695.36,
+          "low_band": 688.58,
+          "fence_multiplier": 1.25,
+          "created_at": "2026-02-02T00:03:34.140868+00:00",
+          "closed_at": null,
+          "current_price": 691.97,
+          "unrealized_pnl": 0.0,
+          "is_inside_range": true
+        },
+        {
+          "id": "aadfbd4d-3a9b-4312-8df5-94b986af58bf",
+          "symbol": "SPY",
+          "direction": "inside",
+          "amount": 50.0,
+          "entry_price": 691.97,
+          "exit_price": null,
+          "pnl": null,
+          "status": "open",
+          "high_band": 697.39,
+          "low_band": 686.55,
+          "fence_multiplier": 2.0,
+          "created_at": "2026-02-02T00:03:34.180739+00:00",
+          "closed_at": null,
+          "current_price": 691.97,
+          "unrealized_pnl": 0.0,
+          "is_inside_range": true
+        }
+      ],
+      "error": null
+    },
+    {
+      "test_name": "Close Trade",
+      "method": "POST",
+      "endpoint": "trade/close",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "message": "Trade closed",
+        "trade": {
+          "id": "c1c05233-fd1a-4a2e-a5fb-23adbb0fadd2",
+          "symbol": "SPY",
+          "direction": "inside",
+          "amount": 100.0,
+          "entry_price": 691.97,
+          "exit_price": 691.97,
+          "pnl": 90.0,
+          "status": "closed",
+          "high_band": 694.68,
+          "low_band": 689.26,
+          "fence_multiplier": 1.0,
+          "created_at": "2026-02-02T00:03:34.058333+00:00",
+          "closed_at": "2026-02-02T00:03:34.261253+00:00"
+        },
+        "pnl": 90.0,
+        "is_win": true,
+        "account": {
+          "id": "344e7a6e-8b7f-4cae-bca2-70edb8e974f0",
+          "balance": 9790.0,
+          "initial_balance": 10000.0,
+          "total_trades": 4,
+          "wins": 1,
+          "losses": 0,
+          "total_pnl": 90.0,
+          "created_at": "2026-02-02T00:03:34.022133+00:00"
+        }
+      },
+      "error": null
+    },
+    {
+      "test_name": "Get All Trades",
+      "method": "GET",
+      "endpoint": "trades",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": [
+        {
+          "id": "aadfbd4d-3a9b-4312-8df5-94b986af58bf",
+          "symbol": "SPY",
+          "direction": "inside",
+          "amount": 50.0,
+          "entry_price": 691.97,
+          "exit_price": null,
+          "pnl": null,
+          "status": "open",
+          "high_band": 697.39,
+          "low_band": 686.55,
+          "fence_multiplier": 2.0,
+          "created_at": "2026-02-02T00:03:34.180739+00:00",
+          "closed_at": null
+        },
+        {
+          "id": "6a83e30d-da31-421d-a508-863e6b80f7ee",
+          "symbol": "SPY",
+          "direction": "inside",
+          "amount": 50.0,
+          "entry_price": 691.97,
+          "exit_price": null,
+          "pnl": null,
+          "status": "open",
+          "high_band": 695.36,
+          "low_band": 688.58,
+          "fence_multiplier": 1.25,
+          "created_at": "2026-02-02T00:03:34.140868+00:00",
+          "closed_at": null
+        },
+        {
+          "id": "13297931-bd40-4ea9-9187-6659f947355f",
+          "symbol": "SPY",
+          "direction": "outside",
+          "amount": 200.0,
+          "entry_price": 691.97,
+          "exit_price": null,
+          "pnl": null,
+          "status": "open",
+          "high_band": 696.04,
+          "low_band": 687.9,
+          "fence_multiplier": 1.5,
+          "created_at": "2026-02-02T00:03:34.102775+00:00",
+          "closed_at": null
+        },
+        {
+          "id": "c1c05233-fd1a-4a2e-a5fb-23adbb0fadd2",
+          "symbol": "SPY",
+          "direction": "inside",
+          "amount": 100.0,
+          "entry_price": 691.97,
+          "exit_price": 691.97,
+          "pnl": 90.0,
+          "status": "closed",
+          "high_band": 694.68,
+          "low_band": 689.26,
+          "fence_multiplier": 1.0,
+          "created_at": "2026-02-02T00:03:34.058333+00:00",
+          "closed_at": "2026-02-02T00:03:34.261253+00:00"
+        }
+      ],
+      "error": null
+    },
+    {
+      "test_name": "Get Scoreboard",
+      "method": "GET",
+      "endpoint": "scoreboard",
+      "expected_status": 200,
+      "actual_status": 200,
+      "success": true,
+      "response_data": {
+        "balance": 9790.0,
+        "initial_balance": 10000.0,
+        "total_pnl": 90.0,
+        "total_trades": 4,
+        "wins": 1,
+        "losses": 0,
+        "win_rate": 25.0,
+        "return_pct": -2.1
+      },
+      "error": null
+    },
+    {
+      "test_name": "Insufficient Balance Test",
+      "method": "POST",
+      "endpoint": "trade",
+      "expected_status": 400,
+      "actual_status": 400,
+      "success": true,
+      "response_data": {
+        "detail": "Insufficient balance. You have $9790.00"
+      },
+      "error": null
+    },
+    {
+      "test_name": "Invalid Direction Test",
+      "method": "POST",
+      "endpoint": "trade",
+      "expected_status": 422,
+      "actual_status": 200,
+      "success": false,
+      "response_data": null,
+      "error": "{\"message\":\"BET OUTSIDE opened\",\"trade\":{\"id\":\"3349ebe0-84f9-42d3-8d00-b330e9f22fff\",\"symbol\":\"SPY\",\"direction\":\"sideways\",\"amount\":100.0,\"entry_price\":691.97,\"exit_price\":null,\"pnl\":null,\"status\":\"open\",\"high_band\":694.68,\"low_band\":689.26,\"fence_multiplier\":1.0,\"created_at\":\"2026-02-02T00:03:34.409917+00:00\",\"closed_at\":null}}"
+    },
+    {
+      "test_name": "Close Non-existent Trade",
+      "method": "POST",
+      "endpoint": "trade/close",
+      "expected_status": 404,
+      "actual_status": 404,
+      "success": true,
+      "response_data": {
+        "detail": "Trade not found or already closed"
+      },
       "error": null
     }
   ]
