@@ -444,7 +444,7 @@ async def reset_account(starting_balance: float = 10000.0):
 
 @api_router.post("/trade")
 async def open_trade(trade_req: TradeRequest):
-    """Open a new paper trade"""
+    """Open a new fence bet (inside or outside)"""
     # Get current account
     account = await db.paper_account.find_one({}, {"_id": 0})
     if not account:
@@ -460,13 +460,20 @@ async def open_trade(trade_req: TradeRequest):
     
     entry_price = trade_req.entry_price or ticker_data.price
     
+    # Apply fence multiplier to widen/narrow the bands
+    avg_range = range_data.avg_daily_range * trade_req.fence_multiplier
+    anchor = range_data.anchor_price or entry_price
+    adjusted_high_band = anchor + (avg_range / 2)
+    adjusted_low_band = anchor - (avg_range / 2)
+    
     trade = Trade(
         symbol=trade_req.symbol.upper(),
-        direction=trade_req.direction,
+        direction=trade_req.direction,  # "inside" or "outside"
         amount=trade_req.amount,
         entry_price=entry_price,
-        high_band=range_data.high_band,
-        low_band=range_data.low_band
+        high_band=round(adjusted_high_band, 2),
+        low_band=round(adjusted_low_band, 2),
+        fence_multiplier=trade_req.fence_multiplier
     )
     
     # Deduct from balance
@@ -475,11 +482,12 @@ async def open_trade(trade_req: TradeRequest):
     doc = trade.model_dump()
     await db.trades.insert_one(doc)
     
-    return {"message": "Trade opened", "trade": trade.model_dump()}
+    bet_type = "INSIDE" if trade_req.direction == "inside" else "OUTSIDE"
+    return {"message": f"BET {bet_type} opened", "trade": trade.model_dump()}
 
 @api_router.post("/trade/close")
 async def close_trade(close_req: CloseTradeRequest):
-    """Close an open trade"""
+    """Close a fence bet and calculate win/loss"""
     trade = await db.trades.find_one({"id": close_req.trade_id, "status": "open"}, {"_id": 0})
     if not trade:
         raise HTTPException(status_code=404, detail="Trade not found or already closed")
@@ -488,14 +496,22 @@ async def close_trade(close_req: CloseTradeRequest):
     ticker_data = await get_ticker_data(trade["symbol"])
     exit_price = close_req.exit_price or ticker_data.price
     
-    # Calculate P&L
-    if trade["direction"] == "long":
-        price_change_pct = (exit_price - trade["entry_price"]) / trade["entry_price"]
-    else:  # short
-        price_change_pct = (trade["entry_price"] - exit_price) / trade["entry_price"]
+    # Determine win/loss based on fence bet type
+    is_inside_fence = trade["low_band"] <= exit_price <= trade["high_band"]
     
-    pnl = trade["amount"] * price_change_pct
-    is_win = pnl > 0
+    if trade["direction"] == "inside":
+        # BET INSIDE: Win if price stayed inside the fence
+        is_win = is_inside_fence
+    else:
+        # BET OUTSIDE: Win if price broke out of the fence
+        is_win = not is_inside_fence
+    
+    # Calculate P&L (simple win/lose for now - could add odds later)
+    # Win = +90% of bet (like real options), Lose = -100% of bet
+    if is_win:
+        pnl = trade["amount"] * 0.9  # Win 90% profit
+    else:
+        pnl = -trade["amount"]  # Lose entire bet
     
     # Update trade
     await db.trades.update_one(
