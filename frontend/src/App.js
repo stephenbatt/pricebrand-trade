@@ -230,33 +230,83 @@ function App() {
         }
     };
     
+    // Login handler
+    const handleLogin = async (username, password) => {
+        // For demo - accept any login
+        // In production, this would call your auth API
+        try {
+            const response = await axios.post(`${API}/auth/login`, { username, password });
+            setCurrentUser(response.data.user);
+            setIsLoggedIn(true);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+            toast.success(`Welcome, ${response.data.user.username}!`);
+        } catch (e) {
+            // Demo mode - allow any login
+            const user = { username, id: Date.now().toString() };
+            setCurrentUser(user);
+            setIsLoggedIn(true);
+            localStorage.setItem('user', JSON.stringify(user));
+            toast.success(`Welcome, ${username}!`);
+        }
+    };
+    
+    // Logout handler
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+        setCurrentUser(null);
+        localStorage.removeItem('user');
+        toast.success("Logged out successfully");
+    };
+    
+    // Check for saved login on mount
     useEffect(() => {
-        fetchTickers();
-        refreshData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        const savedUser = localStorage.getItem('user');
+        if (savedUser) {
+            setCurrentUser(JSON.parse(savedUser));
+            setIsLoggedIn(true);
+        }
     }, []);
     
     useEffect(() => {
-        refreshData();
+        if (isLoggedIn) {
+            fetchTickers();
+            refreshData();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoggedIn]);
+    
+    useEffect(() => {
+        if (isLoggedIn) {
+            refreshData();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedTicker]);
     
     useEffect(() => {
+        if (!isLoggedIn) return;
+        
         const interval = setInterval(() => {
             refreshData();
         }, refreshInterval * 1000);
         
         return () => clearInterval(interval);
-    }, [refreshInterval, refreshData]);
+    }, [refreshInterval, refreshData, isLoggedIn]);
     
     // Check for 4PM market close every minute
     useEffect(() => {
+        if (!isLoggedIn) return;
+        
         const interval = setInterval(() => {
             checkAutoSettle();
         }, 60000); // Check every minute
         
         return () => clearInterval(interval);
-    }, [checkAutoSettle]);
+    }, [checkAutoSettle, isLoggedIn]);
+    
+    // Show login page if not logged in
+    if (!isLoggedIn) {
+        return <LoginPage onLogin={handleLogin} />;
+    }
     
     return (
         <TooltipProvider>
