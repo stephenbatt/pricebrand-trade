@@ -341,7 +341,12 @@ function App() {
                     <HistoricalRangesCard rangeData={rangeData} isLoading={isLoading && !rangeData} />
                     
                     <div className="md:col-span-2 space-y-4">
-                        <Scoreboard scoreboard={scoreboard} onReset={handleResetAccount} />
+                        <Scoreboard 
+                            scoreboard={scoreboard} 
+                            onReset={handleResetAccount} 
+                            onSettleAll={handleSettleAll}
+                            hasOpenBets={openTrades && openTrades.length > 0}
+                        />
                         <TradingPanel
                             selectedTicker={selectedTicker}
                             tickerData={tickerData}
