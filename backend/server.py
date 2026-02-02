@@ -260,6 +260,34 @@ DEFAULT_TICKERS = [
 ]
 
 # =====================
+# AUTH ROUTES (Simple demo auth)
+# =====================
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+@api_router.post("/auth/login")
+async def login(req: LoginRequest):
+    """Simple demo login - accepts any credentials"""
+    # In production, you would validate against a real user database
+    # For demo, accept any username/password
+    user = {
+        "id": str(uuid.uuid4()),
+        "username": req.username,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    # Save user to DB for tracking
+    await db.users.update_one(
+        {"username": req.username},
+        {"$set": user, "$setOnInsert": {"first_login": datetime.now(timezone.utc).isoformat()}},
+        upsert=True
+    )
+    
+    return {"message": "Login successful", "user": user}
+
+# =====================
 # TICKER ROUTES
 # =====================
 
