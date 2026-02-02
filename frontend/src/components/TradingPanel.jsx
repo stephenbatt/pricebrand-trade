@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { DollarSign, Shield, Zap, XCircle, RefreshCw, ChevronUp, ChevronDown } from "lucide-react";
+import { DollarSign, Shield, Zap, XCircle, RefreshCw, CheckCircle } from "lucide-react";
 import { Button } from "./ui/button";
 import { formatNumber } from "../utils/formatters";
 
-export const Scoreboard = ({ scoreboard, onReset }) => {
+export const Scoreboard = ({ scoreboard, onReset, onSettleAll, hasOpenBets }) => {
     if (!scoreboard) return null;
     
     const isProfit = scoreboard.total_pnl >= 0;
@@ -16,16 +16,30 @@ export const Scoreboard = ({ scoreboard, onReset }) => {
                     <DollarSign className="w-4 h-4 text-yellow-500" />
                     <span className="label-text">Scoreboard</span>
                 </div>
-                <Button 
-                    variant="ghost" 
-                    size="sm" 
-                    onClick={onReset}
-                    className="h-6 text-xs text-muted-foreground hover:text-foreground"
-                    data-testid="reset-account-btn"
-                >
-                    <RefreshCw className="w-3 h-3 mr-1" />
-                    Reset
-                </Button>
+                <div className="flex gap-2">
+                    {hasOpenBets && (
+                        <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={onSettleAll}
+                            className="h-6 text-xs text-yellow-500 hover:text-yellow-400 hover:bg-yellow-500/20"
+                            data-testid="settle-all-btn"
+                        >
+                            <CheckCircle className="w-3 h-3 mr-1" />
+                            Settle All
+                        </Button>
+                    )}
+                    <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        onClick={onReset}
+                        className="h-6 text-xs text-muted-foreground hover:text-foreground"
+                        data-testid="reset-account-btn"
+                    >
+                        <RefreshCw className="w-3 h-3 mr-1" />
+                        Reset
+                    </Button>
+                </div>
             </div>
             
             <div className="grid grid-cols-2 gap-4">
