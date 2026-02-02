@@ -228,6 +228,15 @@ function App() {
         return () => clearInterval(interval);
     }, [refreshInterval, refreshData]);
     
+    // Check for 4PM market close every minute
+    useEffect(() => {
+        const interval = setInterval(() => {
+            checkAutoSettle();
+        }, 60000); // Check every minute
+        
+        return () => clearInterval(interval);
+    }, [checkAutoSettle]);
+    
     return (
         <TooltipProvider>
             <div className="dashboard-container" data-testid="dashboard-container">
