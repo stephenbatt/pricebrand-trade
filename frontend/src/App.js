@@ -381,6 +381,29 @@ function App() {
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>
+                        
+                        {/* User & Logout */}
+                        <div className="flex items-center gap-2 pl-4 border-l border-border">
+                            <span className="text-xs text-muted-foreground font-mono">
+                                {currentUser?.username}
+                            </span>
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button 
+                                        variant="ghost" 
+                                        size="icon"
+                                        onClick={handleLogout}
+                                        className="h-8 w-8 text-muted-foreground hover:text-red-500"
+                                        data-testid="logout-btn"
+                                    >
+                                        <LogOut className="w-4 h-4" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent className="tooltip-content">
+                                    Logout
+                                </TooltipContent>
+                            </Tooltip>
+                        </div>
                     </div>
                 </header>
                 
