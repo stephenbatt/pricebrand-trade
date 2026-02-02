@@ -11,7 +11,8 @@ import {
     BarChart3,
     Settings,
     Zap,
-    ChevronDown
+    ChevronDown,
+    LogOut
 } from "lucide-react";
 import {
     DropdownMenu,
@@ -31,11 +32,16 @@ import { StatsCard } from "./components/StatsCard";
 import { AllTickersPanel } from "./components/AllTickersPanel";
 import { TickerTape } from "./components/TickerTape";
 import { Scoreboard, TradingPanel } from "./components/TradingPanel";
+import { LoginPage } from "./components/LoginPage";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 function App() {
+    // Auth state
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [currentUser, setCurrentUser] = useState(null);
+    
     const [selectedTicker, setSelectedTicker] = useState('SPY');
     const [tickers, setTickers] = useState([]);
     const [tickerData, setTickerData] = useState(null);
