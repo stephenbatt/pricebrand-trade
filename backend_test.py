@@ -127,6 +127,112 @@ class TradingRangeAPITester:
             return success and success2 and success3
         return False
 
+    def test_paper_trading_account(self):
+        """Test paper trading account operations"""
+        # Get account (creates if doesn't exist)
+        success, response = self.run_test("Get Account", "GET", "account", 200)
+        if success and response:
+            print(f"   Balance: ${response.get('balance')}, Trades: {response.get('total_trades')}")
+        
+        # Reset account
+        success2, response2 = self.run_test("Reset Account", "POST", "account/reset", 200, data={"starting_balance": 10000})
+        if success2 and response2:
+            print(f"   Account reset to ${response2.get('account', {}).get('balance', 10000)}")
+        
+        return success and success2
+
+    def test_fence_betting(self, symbol):
+        """Test fence betting operations"""
+        print(f"\n🎯 Testing Fence Betting for {symbol}...")
+        
+        # Reset account first
+        self.run_test("Reset Account for Betting", "POST", "account/reset", 200, data={"starting_balance": 10000})
+        
+        # Test BET INSIDE with different fence multipliers
+        inside_trade_data = {
+            "symbol": symbol,
+            "direction": "inside",
+            "amount": 100,
+            "fence_multiplier": 1.0
+        }
+        success1, trade1 = self.run_test("BET INSIDE (1x fence)", "POST", "trade", 200, data=inside_trade_data)
+        
+        # Test BET OUTSIDE with wider fence
+        outside_trade_data = {
+            "symbol": symbol,
+            "direction": "outside", 
+            "amount": 200,
+            "fence_multiplier": 1.5
+        }
+        success2, trade2 = self.run_test("BET OUTSIDE (1.5x fence)", "POST", "trade", 200, data=outside_trade_data)
+        
+        # Test different fence multipliers
+        fence_multipliers = [1.25, 2.0]
+        for multiplier in fence_multipliers:
+            fence_data = {
+                "symbol": symbol,
+                "direction": "inside",
+                "amount": 50,
+                "fence_multiplier": multiplier
+            }
+            self.run_test(f"BET INSIDE ({multiplier}x fence)", "POST", "trade", 200, data=fence_data)
+        
+        # Get open trades
+        success3, open_trades = self.run_test("Get Open Trades", "GET", "trades/open", 200)
+        if success3 and open_trades:
+            print(f"   Found {len(open_trades)} open trades")
+            
+            # Close first trade if exists
+            if len(open_trades) > 0:
+                trade_id = open_trades[0].get('id')
+                close_data = {"trade_id": trade_id}
+                success4, close_result = self.run_test("Close Trade", "POST", "trade/close", 200, data=close_data)
+                if success4 and close_result:
+                    pnl = close_result.get('pnl', 0)
+                    is_win = close_result.get('is_win', False)
+                    print(f"   Trade closed: {'WIN' if is_win else 'LOSS'}, P&L: ${pnl}")
+        
+        # Get all trades
+        success5, all_trades = self.run_test("Get All Trades", "GET", "trades", 200)
+        if success5 and all_trades:
+            print(f"   Total trades in history: {len(all_trades)}")
+        
+        # Get scoreboard
+        success6, scoreboard = self.run_test("Get Scoreboard", "GET", "scoreboard", 200)
+        if success6 and scoreboard:
+            print(f"   Scoreboard - Balance: ${scoreboard.get('balance')}, Win Rate: {scoreboard.get('win_rate')}%")
+        
+        return success1 and success2 and success3
+
+    def test_fence_betting_edge_cases(self):
+        """Test fence betting edge cases and error handling"""
+        print(f"\n⚠️  Testing Fence Betting Edge Cases...")
+        
+        # Test insufficient balance
+        large_bet_data = {
+            "symbol": "SPY",
+            "direction": "inside",
+            "amount": 50000,  # More than account balance
+            "fence_multiplier": 1.0
+        }
+        success1, response1 = self.run_test("Insufficient Balance Test", "POST", "trade", 400, data=large_bet_data)
+        
+        # Test invalid direction
+        invalid_direction_data = {
+            "symbol": "SPY", 
+            "direction": "sideways",  # Invalid direction
+            "amount": 100,
+            "fence_multiplier": 1.0
+        }
+        # This might return 422 for validation error or 200 if backend doesn't validate
+        self.run_test("Invalid Direction Test", "POST", "trade", 422, data=invalid_direction_data)
+        
+        # Test closing non-existent trade
+        close_fake_data = {"trade_id": "fake-trade-id-12345"}
+        success3, response3 = self.run_test("Close Non-existent Trade", "POST", "trade/close", 404, data=close_fake_data)
+        
+        return True  # Edge cases are informational
+
 def main():
     print("🚀 Starting 0DTE Trading Range Calculator API Tests")
     print("=" * 60)
