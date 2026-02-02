@@ -149,19 +149,21 @@ function App() {
         }
     };
     
-    const handleTrade = async (symbol, direction, amount) => {
+    const handleTrade = async (symbol, direction, amount, fenceMultiplier = 1.0) => {
         try {
             const response = await axios.post(`${API}/trade`, {
                 symbol,
                 direction,
-                amount
+                amount,
+                fence_multiplier: fenceMultiplier
             });
-            toast.success(`${direction.toUpperCase()} trade opened: $${amount}`);
+            const betType = direction === 'inside' ? 'INSIDE' : 'OUTSIDE';
+            toast.success(`BET ${betType} placed: $${amount}`);
             await fetchScoreboard();
             await fetchOpenTrades();
         } catch (e) {
             console.error("Error opening trade:", e);
-            toast.error(e.response?.data?.detail || "Failed to open trade");
+            toast.error(e.response?.data?.detail || "Failed to place bet");
         }
     };
     
