@@ -127,6 +127,20 @@ function App() {
         setIsLoading(false);
     }, [selectedTicker, fetchTickerData, fetchRangeData, fetchAllTickers, fetchMarketStatus, fetchScoreboard, fetchOpenTrades]);
     
+    // Check for 4PM auto-settle
+    const checkAutoSettle = useCallback(async () => {
+        try {
+            const response = await axios.get(`${API}/check-market-close`);
+            if (response.data.auto_settled) {
+                toast.success(`Market closed! ${response.data.result.settled_trades?.length || 0} bets auto-settled`);
+                await fetchScoreboard();
+                await fetchOpenTrades();
+            }
+        } catch (e) {
+            console.error("Error checking auto-settle:", e);
+        }
+    }, [fetchScoreboard, fetchOpenTrades]);
+    
     const handleSetAnchor = async () => {
         if (!tickerData?.price) {
             toast.error("No price data available");
