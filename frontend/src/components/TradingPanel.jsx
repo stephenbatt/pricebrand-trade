@@ -169,7 +169,7 @@ export const TradingPanel = ({ selectedTicker, tickerData, rangeData, scoreboard
                         type="number"
                         value={tradeAmount}
                         onChange={(e) => setTradeAmount(Math.min(Number(e.target.value), maxBet))}
-                        className="flex-1 bg-surface-highlight border border-border rounded-sm px-3 py-2 font-mono text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                        className="flex-1 bg-zinc-800 border border-border rounded-sm px-3 py-2 font-mono text-sm text-white focus:outline-none focus:ring-1 focus:ring-primary"
                         placeholder="Amount"
                         min="1"
                         max={maxBet}
