@@ -618,6 +618,100 @@ async def get_scoreboard():
         "return_pct": round(return_pct, 2)
     }
 
+@api_router.post("/auto-settle")
+async def auto_settle_trades():
+    """Auto-settle all open trades at market close (4PM EST for stocks, anytime for crypto)"""
+    settled = []
+    
+    # Get all open trades
+    open_trades = await db.trades.find({"status": "open"}, {"_id": 0}).to_list(100)
+    
+    for trade in open_trades:
+        try:
+            # Get current price
+            ticker_data = await get_ticker_data(trade["symbol"])
+            exit_price = ticker_data.price
+            
+            # Determine win/loss based on fence bet type
+            is_inside_fence = trade["low_band"] <= exit_price <= trade["high_band"]
+            
+            if trade["direction"] == "inside":
+                is_win = is_inside_fence
+            else:  # outside
+                is_win = not is_inside_fence
+            
+            # Calculate P&L
+            if is_win:
+                pnl = trade["amount"] * 0.9  # Win 90% profit
+            else:
+                pnl = -trade["amount"]  # Lose entire bet
+            
+            # Update trade
+            await db.trades.update_one(
+                {"id": trade["id"]},
+                {"$set": {
+                    "exit_price": exit_price,
+                    "pnl": round(pnl, 2),
+                    "status": "settled",
+                    "closed_at": datetime.now(timezone.utc).isoformat()
+                }}
+            )
+            
+            # Update account
+            await db.paper_account.update_one({}, {
+                "$inc": {
+                    "balance": trade["amount"] + pnl,
+                    "total_pnl": pnl,
+                    "wins": 1 if is_win else 0,
+                    "losses": 0 if is_win else 1
+                }
+            })
+            
+            settled.append({
+                "trade_id": trade["id"],
+                "symbol": trade["symbol"],
+                "direction": trade["direction"],
+                "is_win": is_win,
+                "pnl": round(pnl, 2),
+                "exit_price": exit_price
+            })
+            
+        except Exception as e:
+            logger.error(f"Error settling trade {trade['id']}: {e}")
+    
+    return {
+        "message": f"Settled {len(settled)} trades",
+        "settled_trades": settled
+    }
+
+@api_router.get("/check-market-close")
+async def check_market_close():
+    """Check if it's 4PM EST and auto-settle stock trades"""
+    now = datetime.now(timezone.utc)
+    est_offset = timedelta(hours=-5)
+    est_now = now + est_offset
+    
+    # Check if it's around 4PM EST (4:00-4:05)
+    is_close_time = est_now.hour == 16 and est_now.minute < 5
+    is_weekday = est_now.weekday() < 5
+    
+    if is_close_time and is_weekday:
+        # Get open stock trades (not crypto)
+        stock_trades = await db.trades.find({
+            "status": "open",
+            "symbol": {"$in": ["SPY", "SPX", "QQQ"]}
+        }, {"_id": 0}).to_list(100)
+        
+        if stock_trades:
+            result = await auto_settle_trades()
+            return {"auto_settled": True, "result": result}
+    
+    return {
+        "auto_settled": False,
+        "current_time_est": est_now.strftime("%H:%M:%S"),
+        "is_market_close": is_close_time and is_weekday
+    }
+
 # Include router
 app.include_router(api_router)
 
