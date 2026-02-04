@@ -268,15 +268,6 @@ function App() {
         toast.success("Logged out successfully");
     };
     
-    // Check for saved login on mount
-    useEffect(() => {
-        const savedUser = localStorage.getItem('user');
-        if (savedUser) {
-            setCurrentUser(JSON.parse(savedUser));
-            setIsLoggedIn(true);
-        }
-    }, []);
-    
     useEffect(() => {
         if (isLoggedIn) {
             fetchTickers();
