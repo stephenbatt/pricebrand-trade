@@ -37,10 +37,20 @@ import { LoginPage } from "./components/LoginPage";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Check for saved login BEFORE component renders
+const getSavedUser = () => {
+    try {
+        const saved = localStorage.getItem('user');
+        return saved ? JSON.parse(saved) : null;
+    } catch {
+        return null;
+    }
+};
+
 function App() {
-    // Auth state
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [currentUser, setCurrentUser] = useState(null);
+    // Auth state - initialize from localStorage
+    const [isLoggedIn, setIsLoggedIn] = useState(() => !!getSavedUser());
+    const [currentUser, setCurrentUser] = useState(() => getSavedUser());
     
     const [selectedTicker, setSelectedTicker] = useState('SPY');
     const [tickers, setTickers] = useState([]);
