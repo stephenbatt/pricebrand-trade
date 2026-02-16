@@ -24,16 +24,17 @@ flake8==7.3.0
 frozenlist==1.8.0
 fsspec==2026.1.0
 
-# --- GOOGLE STACK (PYTHON 3.14 SAFE) ---
+# --- GOOGLE STACK (FIXED, PYTHON 3.14 SAFE) ---
 google-api-core[grpc]==2.29.0
 google-api-python-client==2.188.0
 google-auth==2.47.0
 google-auth-httplib2==0.3.0
 google-genai==1.59.0
 google-generativeai==0.8.6
-googleapis-common-protos==1.63.0
+googleapis-common-protos>=1.63.0
 proto-plus>=1.25.0,<2.0.0
-grpcio-status==1.78.0
+protobuf>=6.31.1
+grpcio-status>=1.78.0
 grpcio-reflection==1.62.2
 grpcio-channelz==1.62.2
 grpcio-health-checking==1.62.2
