@@ -33,7 +33,6 @@ google-genai==1.59.0
 google-generativeai==0.8.6
 googleapis-common-protos==1.63.0
 proto-plus>=1.25.0,<2.0.0
-protobuf==4.25.3
 grpcio-status==1.78.0
 grpcio-reflection==1.62.2
 grpcio-channelz==1.62.2
