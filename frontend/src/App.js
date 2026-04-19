@@ -34,7 +34,7 @@ import { TickerTape } from "./components/TickerTape";
 import { Scoreboard, TradingPanel } from "./components/TradingPanel";
 import { LoginPage } from "./components/LoginPage";
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const BACKEND_URL = "https://priceband-backend.onrender.com";
 const API = `${BACKEND_URL}/api`;
 
 // Check for saved login BEFORE component renders
