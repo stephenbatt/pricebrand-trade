@@ -105,7 +105,7 @@ export const TradingPanel = ({ selectedTicker, tickerData, rangeData, scoreboard
         }
     };
     
-    const maxBet = scoreboard?.balance || 0;
+    const maxBet = scoreboard?.balance ?? 10000;
     
     // Calculate adjusted fence
     const avgRange = rangeData?.avg_daily_range || 0;
