@@ -225,3 +225,11 @@
     font-size: 0.75rem;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
 }
+/* Hide EMERGE watermark / badge */
+[class*="emerge"],
+[id*="emerge"],
+iframe[src*="emerge"],
+div[style*="z-index"] {
+    display: none !important;
+    visibility: hidden !important;
+}
