@@ -767,3 +767,76 @@ app.add_middleware(
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
+
+
+# =========================
+# AUTO-SETTLE BACKGROUND WORKER
+# =========================
+
+import threading
+import time
+from datetime import datetime
+
+
+def auto_settle_trades():
+    open_trades = list(trades_collection.find({"status": "open"}))
+
+    for trade in open_trades:
+        try:
+            symbol = trade["symbol"]
+
+            price_data = get_current_price(symbol)
+            current_price = price_data["price"]
+
+            high = trade["high_band"]
+            low = trade["low_band"]
+
+            is_inside = low <= current_price <= high
+
+            if trade["direction"] == "inside":
+                win = is_inside
+            else:
+                win = not is_inside
+
+            pnl = trade["amount"] if win else -trade["amount"]
+
+            trades_collection.update_one(
+                {"_id": trade["_id"]},
+                {"$set": {
+                    "status": "closed",
+                    "closed_price": current_price,
+                    "pnl": pnl,
+                    "is_win": win
+                }}
+            )
+
+        except Exception as e:
+            print("Trade error:", e)
+
+    print(f"✅ Auto-settled {len(open_trades)} trades")
+
+
+def background_worker():
+    already_settled_today = False
+
+    while True:
+        try:
+            now = datetime.utcnow()
+            hour = now.hour - 4  # crude EST adjust
+            minute = now.minute
+
+            # Run ONLY once at exactly 4:00 PM EST
+            if hour == 16 and minute == 0 and not already_settled_today:
+                print("🔔 Running auto-settle check...")
+                auto_settle_trades()
+                already_settled_today = True
+
+            # Reset flag after 5 PM so it works again next day
+            if hour >= 17:
+                already_settled_today = False
+
+        except Exception as e:
+            print("Worker error:", e)
+
+        time.sleep(60)
+threading.Thread(target=background_worker, daemon=True).start()
