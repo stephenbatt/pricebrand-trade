@@ -770,50 +770,13 @@ async def shutdown_db_client():
 
 
 # =========================
-# AUTO-SETTLE BACKGROUND WORKER
+# AUTO-SETTLE BACKGROUND WORKER (FIXED)
 # =========================
 
 import threading
 import time
-from datetime import datetime
-
-
-def auto_settle_trades():
-    open_trades = list(trades_collection.find({"status": "open"}))
-
-    for trade in open_trades:
-        try:
-            symbol = trade["symbol"]
-
-            price_data = get_current_price(symbol)
-            current_price = price_data["price"]
-
-            high = trade["high_band"]
-            low = trade["low_band"]
-
-            is_inside = low <= current_price <= high
-
-            if trade["direction"] == "inside":
-                win = is_inside
-            else:
-                win = not is_inside
-
-            pnl = trade["amount"] if win else -trade["amount"]
-
-            trades_collection.update_one(
-                {"_id": trade["_id"]},
-                {"$set": {
-                    "status": "closed",
-                    "closed_price": current_price,
-                    "pnl": pnl,
-                    "is_win": win
-                }}
-            )
-
-        except Exception as e:
-            print("Trade error:", e)
-
-    print(f"✅ Auto-settled {len(open_trades)} trades")
+from datetime import datetime, timezone, timedelta
+import asyncio
 
 
 def background_worker():
@@ -821,22 +784,35 @@ def background_worker():
 
     while True:
         try:
-            now = datetime.utcnow()
-            hour = now.hour - 4  # crude EST adjust
-            minute = now.minute
+            now = datetime.now(timezone.utc)
+            est_offset = timedelta(hours=-5)
+            est_now = now + est_offset
 
-            # Run ONLY once at exactly 4:00 PM EST
-            if hour == 16 and minute == 0 and not already_settled_today:
-                print("🔔 Running auto-settle check...")
-                auto_settle_trades()
+            hour = est_now.hour
+            minute = est_now.minute
+            is_weekday = est_now.weekday() < 5
+
+            # Run once anytime after 4PM EST
+            if hour >= 16 and hour < 17 and is_weekday and not already_settled_today:
+                print("🔔 Running auto-settle (background worker)...")
+
+                loop = asyncio.new_event_loop()
+                asyncio.set_event_loop(loop)
+                loop.run_until_complete(auto_settle_trades())
+                loop.close()
+
                 already_settled_today = True
 
-            # Reset flag after 5 PM so it works again next day
-            if hour >= 17:
+            # Reset after midnight
+            if hour < 9:
                 already_settled_today = False
 
         except Exception as e:
             print("Worker error:", e)
 
         time.sleep(60)
-threading.Thread(target=background_worker, daemon=True).start()
+
+
+@app.on_event("startup")
+async def start_background_worker():
+    threading.Thread(target=background_worker, daemon=True).start()
