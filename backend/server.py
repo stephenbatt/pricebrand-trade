@@ -664,41 +664,35 @@ async def auto_settle_trades():
     """Auto-settle all open trades at market close (4PM EST for stocks, anytime for crypto)"""
     settled = []
     
-    # Get all open trades
     open_trades = await db.trades.find({"status": "open"}, {"_id": 0}).to_list(100)
     
     for trade in open_trades:
         try:
-            # Get current price
             ticker_data = await get_ticker_data(trade["symbol"])
             exit_price = ticker_data.price
             
-            # Determine win/loss based on fence bet type
             is_inside_fence = trade["low_band"] <= exit_price <= trade["high_band"]
             
             if trade["direction"] == "inside":
                 is_win = is_inside_fence
-            else:  # outside
+            else:
                 is_win = not is_inside_fence
             
-            # Calculate P&L
             if is_win:
-                pnl = trade["amount"] * 0.9  # Win 90% profit
+                pnl = trade["amount"] * 0.9
             else:
-                pnl = -trade["amount"]  # Lose entire bet
+                pnl = -trade["amount"]
             
-            # Update trade
             await db.trades.update_one(
                 {"id": trade["id"]},
                 {"$set": {
                     "exit_price": exit_price,
                     "pnl": round(pnl, 2),
-                    "status": "settled",
+                    "status": "closed",  # FIXED (was "settled")
                     "closed_at": datetime.now(timezone.utc).isoformat()
                 }}
             )
             
-            # Update account
             await db.paper_account.update_one({}, {
                 "$inc": {
                     "balance": trade["amount"] + pnl,
@@ -725,19 +719,19 @@ async def auto_settle_trades():
         "settled_trades": settled
     }
 
+
 @api_router.get("/check-market-close")
 async def check_market_close():
     """Check if it's 4PM EST and auto-settle stock trades"""
-    now = datetime.now(timezone.utc)
-    est_offset = timedelta(hours=-5)
-    est_now = now + est_offset
     
-    # Check if it's around 4PM EST (4:00-4:05)
+    import pytz
+    eastern = pytz.timezone("US/Eastern")
+    est_now = datetime.now(eastern)
+    
     is_close_time = est_now.hour == 16 and est_now.minute < 5
     is_weekday = est_now.weekday() < 5
     
     if is_close_time and is_weekday:
-        # Get open stock trades (not crypto)
         stock_trades = await db.trades.find({
             "status": "open",
             "symbol": {"$in": ["SPY", "SPX", "QQQ"]}
@@ -753,6 +747,7 @@ async def check_market_close():
         "is_market_close": is_close_time and is_weekday
     }
 
+
 # Include router
 app.include_router(api_router)
 
@@ -763,6 +758,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
@@ -775,7 +771,7 @@ async def shutdown_db_client():
 
 import threading
 import time
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timezone
 import asyncio
 
 
@@ -784,33 +780,29 @@ def background_worker():
 
     while True:
         try:
-            now = datetime.now(timezone.utc)
-            est_offset = timedelta(hours=-5)
-            est_now = now + est_offset
+            import pytz
+            eastern = pytz.timezone("US/Eastern")
+            est_now = datetime.now(eastern)
 
             hour = est_now.hour
             minute = est_now.minute
             is_weekday = est_now.weekday() < 5
 
-            # Run once anytime after 4PM EST
-            if hour >= 16 and hour < 17 and is_weekday and not already_settled_today:
-                print("🔔 Running auto-settle (background worker)...")
+            # FIXED: actually trigger settlement
+            if is_weekday and hour == 16 and minute < 5:
+                if not already_settled_today:
+                    print("Market close detected — settling trades")
+                    asyncio.run(auto_settle_trades())
+                    already_settled_today = True
 
-                loop = asyncio.new_event_loop()
-                asyncio.set_event_loop(loop)
-                loop.run_until_complete(auto_settle_trades())
-                loop.close()
-
-                already_settled_today = True
-
-            # Reset after midnight
-            if hour < 9:
+            # reset next day
+            if hour < 15:
                 already_settled_today = False
 
         except Exception as e:
-            print("Worker error:", e)
+            print(f"Background worker error: {e}")
 
-        time.sleep(60)
+        time.sleep(10)
 
 
 @app.on_event("startup")
