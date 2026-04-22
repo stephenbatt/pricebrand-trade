@@ -789,7 +789,7 @@ def background_worker():
             is_weekday = est_now.weekday() < 5
 
             # FIXED: actually trigger settlement
-            if is_weekday and hour == 16 and minute < 5:
+            if True:
                 if not already_settled_today:
                     print("Market close detected — settling trades")
                     asyncio.run(auto_settle_trades())
